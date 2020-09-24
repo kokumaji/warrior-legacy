@@ -158,7 +158,7 @@ data-storage:
 
     connect-timeout: 5000
 
-    table-prefix: "stickypvp_"
+    table-prefix: "Warrior_"
 
 use-modules:
   # always uses placeholderapi for now

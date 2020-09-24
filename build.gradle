@@ -31,7 +31,7 @@ plugins {
 
 group 'com.kokumaji'
 version '1.0-DEV'
-mainClassName = 'com.kokumaji.StickyPvP.StickyPvP'
+mainClassName = 'com.kokumaji.Warrior.Warrior'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -50,15 +50,6 @@ repositories {
 
 }
 
-shadowJar {
-    baseName = "${jar.archivePath}-shadow"
-    classifier = ''
-    archiveVersion = ''
-
-    project.configurations.implementation.canBeResolved = true
-    configurations = [project.configurations.compile, project.configurations.implementation]
-}
-
 dependencies {
     // This dependency is used by the application.
     compileOnly 'com.google.guava:guava:29.0-jre'
@@ -66,12 +57,20 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-    compileOnly files('libs/spigot-1.16.2.jar')
-    compileOnly files('libs/HibiscusAPI.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
     // testImplementation 'junit:junit:4.13'
 
     compileOnly 'me.clip:placeholderapi:2.10.9'
     // compileOnly minecraftServer()
+}
+
+shadowJar {
+    baseName = "${jar.archivePath}-shadow"
+    classifier = ''
+    archiveVersion = ''
+
+    project.configurations.implementation.canBeResolved = true
+    configurations = [project.configurations.compile, project.configurations.implementation]
 }
 
 task obfuscate(type: proguard.gradle.ProGuardTask) {
@@ -83,7 +82,7 @@ task obfuscate(type: proguard.gradle.ProGuardTask) {
 
     ignorewarnings
 
-    keep 'public class com.kokumaji.StickyPvP.StickyPvP'
+    keep 'public class com.kokumaji.Warrior.Warrior'
 }
 
 spigot {
