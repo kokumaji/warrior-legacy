@@ -1,0 +1,3 @@
+general-messages:
+  join-message: "&b{Player} &7joined the server! (&b{Online}&7/&b{MaxPlayers}&7)"
+  quit-message: "&b{Player} &7left the server! (&b{Online}&7/&b{MaxPlayers}&7)"
