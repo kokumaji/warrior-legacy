@@ -1,0 +1,172 @@
+#------------------------------------------------------#
+#    _____ _   _      _          _____        _____    #
+#   / ____| | (_)    | |        |  __ \      |  __ \   #
+#  | (___ | |_ _  ___| | ___   _| |__) |_   _| |__) |  #
+#   \___ \| __| |/ __| |/ / | | |  ___/\ \ / /  ___/   #
+#   ____) | |_| | (__|   <| |_| | |     \ V /| |       #
+#  |_____/ \__|_|\___|_|\_\\__, |_|      \_/ |_|       #
+#                           __/ |                      #
+#                          |___/           version 1.0 #
+#                                developed by Kokumaji #
+#------------------------------------------------------#
+
+general-settings:
+
+  default-language: "en_US"
+
+  allow-translations: true
+
+  plugin-prefix: "&3&lKitPvP §8»§r"
+
+  debug: true
+
+chat-settings:
+
+  announce-join: true
+
+  announce-quit: true
+
+  send-motd: true
+
+lobby-settings:
+
+  use-plugin-spawn: true
+
+  teleport-on-join: true
+
+  # plugin will use spawn of the following world
+  # if use-plugin-spawn is set to false
+  spawn-world: "world"
+
+  play-sound: "ENTITY_ENDERMAN_TELEPORT"
+
+arena-settings:
+
+  teleport-delay: 5
+
+  teleport-in-combat: false
+
+  play-teleport-sound: "ENTITY_ENDERMAN_TELEPORT"
+
+stats-settings:
+
+  allow-stats: true
+
+  stats-types:
+    - DAILY
+    - WEEKLY
+    - MONTHLY
+
+quest-settings:
+
+  allow-quests: true
+
+  quest-types:
+    - DAILY
+    - WEEKLY
+    - MONTHLY
+
+economy-settings:
+  # if set to false, use native currency manager
+  use-vault: true
+  # name of currency
+  currency-name: "coins"
+
+  # set to 0 to disable
+  death-punishment: 5
+
+  kill-reward: 25
+
+kit-settings:
+  # not yet implemented, allow users to
+  # register custom kits
+  allow-custom-kits: false
+
+  alchemist:
+    enabled: true
+    cost: 1000
+
+  archer:
+    enabled: true
+    cost: 1000
+
+  bomber:
+    enabled: true
+    cost: 1000
+
+  ninja:
+    enabled: true
+    cost: 1000
+
+  pyro:
+    enabled: true
+    cost: 1000
+
+  soldier:
+    enabled: true
+    cost: 1000
+
+  stomper:
+    enabled: true
+    cost: 1000
+
+  tank:
+    enabled: true
+    cost: 1000
+
+  thor:
+    enabled: true
+    cost: 1000
+
+killstreak-settings:
+    # use killstreak system
+    allow-killstreaks: true
+    # announce kill streak globally
+    announce-killstreak: true
+    # reward killstreaks with currency (multiplies with kill amount)
+    reward-killstreaks: true
+    # killstreak sound (requires announce-killstreak = true)
+    killstreak-announce-sound: ENTITY_ENDERDRAGON_GROWL
+    # killstreak cooldown (in seconds)
+    killstreak-cooldown: 60
+    # when to announce/reward killstreaks
+    killstreak-goals:
+      - 5
+      - 10
+      - 15
+      - 20
+      - 30
+      - 50
+
+data-storage:
+  # h2, mysql
+  storage-method: mysql
+
+  mysql-settings:
+
+    host: localhost
+
+    port: 3306
+
+    database: database
+
+    username: root
+
+    password: password
+
+    pool-size: 32
+
+    connect-timeout: 5000
+
+    table-prefix: "Warrior_"
+
+use-modules:
+  # always uses placeholderapi for now
+  # will allow native in the future
+  placeholder-manager: papi
+
+  # use built in chat manager
+  use-chat-manager: false
+
+  # use native npc manager
+  use-npc-manager: true
