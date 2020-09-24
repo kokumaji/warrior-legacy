@@ -45,6 +45,10 @@ repositories {
     }
 
     maven {
+        url 'https://repo.codemc.org/repository/maven-public'
+    }
+
+    maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
 
@@ -53,13 +57,16 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     compileOnly 'com.google.guava:guava:29.0-jre'
-    implementation "com.zaxxer:HikariCP:3.4.2"
     compileOnly 'org.projectlombok:lombok:1.18.12'
+
+    shadow "com.zaxxer:HikariCP:3.4.2"
+    shadow files('libs/HibiscusAPI.jar')
+
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-    compile fileTree(dir: 'libs', include: '*.jar')
     // testImplementation 'junit:junit:4.13'
 
+    compile files('libs/spigot-1.16.2.jar')
     compileOnly 'me.clip:placeholderapi:2.10.9'
     // compileOnly minecraftServer()
 }
@@ -70,7 +77,7 @@ shadowJar {
     archiveVersion = ''
 
     project.configurations.implementation.canBeResolved = true
-    configurations = [project.configurations.compile, project.configurations.implementation]
+    configurations = [project.configurations.shadow]
 }
 
 task obfuscate(type: proguard.gradle.ProGuardTask) {
