@@ -7,7 +7,9 @@ import com.kokumaji.Warrior.Game.Objects.User;
 import com.kokumaji.Warrior.Game.Objects.UserStats;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Utils.*;
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -52,7 +54,7 @@ public class PlayerListener implements Listener {
 
             if(c.getBoolean("chat-settings.announce-join")) {
                 e.setJoinMessage(null);
-                TranslationsUtil t = (TranslationsUtil) self.GetUtil("trans");
+                Translator t = Warrior.getTranslator();
                 for(User u : UserManager.GetPlayers()) {
                     u.SendMessage(t.Translate(p, "general-messages.join-message", true, new HashMap<String, String>() {
                         {
@@ -86,7 +88,7 @@ public class PlayerListener implements Listener {
 
             if(c.getBoolean("chat-settings.announce-quit")) {
                 e.setQuitMessage(null);
-                TranslationsUtil t = (TranslationsUtil) self.GetUtil("trans");
+                Translator t = Warrior.getTranslator();
                 for(User u : UserManager.GetPlayers()) {
                     u.SendMessage(t.Translate(p, "general-messages.quit-message", true, new HashMap<String, String>() {
                         {

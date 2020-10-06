@@ -16,9 +16,11 @@ general-settings:
 
   allow-translations: true
 
-  plugin-prefix: "&3&lKitPvP §8»§r"
+  plugin-prefix: "&3&lWarrior §8»§r"
 
   debug: true
+
+  use-placeholder-module: true
 
 chat-settings:
 

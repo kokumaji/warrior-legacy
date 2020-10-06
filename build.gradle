@@ -38,7 +38,7 @@ repositories {
     }
 
     // This is for bStats... cuz PlaceholderAPI doesnt like
-    // being shadow jar'd without it... 
+    // being shadow jar'd without it...
     maven {
         url 'https://repo.codemc.org/repository/maven-public'
     }
@@ -62,12 +62,12 @@ dependencies {
 // vv Configuring the Gradle plugins below vv
 
 shadowJar {
-    baseName = "${jar.archivePath}-shadow"
-    classifier = ''
-    archiveVersion = ''
 
+    archiveClassifier.set('')
     project.configurations.implementation.canBeResolved = true
     configurations = [project.configurations.shadow]
+
+    minimize()
 }
 
 spigot {

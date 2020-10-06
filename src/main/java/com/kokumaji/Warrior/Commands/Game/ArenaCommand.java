@@ -14,8 +14,8 @@ import com.kokumaji.Warrior.Game.Objects.GUIs.ArenaGUI;
 import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
 import com.kokumaji.Warrior.Utils.MessageUtil;
-import com.kokumaji.Warrior.Utils.TranslationsUtil;
 
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -29,9 +29,13 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
     Warrior self;
 
+    private Translator translator;
+
     public ArenaCommand(String commmandName, Plugin plugin) {
         super(commmandName, plugin);
         this.self = (Warrior) plugin;
+
+        this.translator = Warrior.getTranslator();
         this.setTabCompleter(this);
     }
 
@@ -54,7 +58,6 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     @Override
     public int Execute(CommandSender sender, String commandLabel, String[] args) {
         User u = UserManager.GetPlayer(((Player) sender).getUniqueId());
-        TranslationsUtil t = (TranslationsUtil) self.GetUtil("trans");
         FileConfiguration c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
 
         if (args.length == 0) {
@@ -89,7 +92,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                 }
             });
 
-            u.SendMessage(TranslationsUtil.Translate(u.Bukkit(), "arena-messages.arena-teleport", true, new HashMap<>(){
+            u.SendMessage(translator.Translate(u.Bukkit(), "arena-messages.arena-teleport", true, new HashMap<>(){
                 private static final long serialVersionUID = 1L;
 
                 {
@@ -104,7 +107,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
             Arena a = ArenaManager.GetArena(args[1]);
             
             if(a != null) {
-                u.SendMessage(TranslationsUtil.Translate(u.Bukkit(), "arena-messages.arena-already-exists", true, new HashMap<>(){
+                u.SendMessage(translator.Translate(u.Bukkit(), "arena-messages.arena-already-exists", true, new HashMap<>(){
                     private static final long serialVersionUID = 1L;
     
                     {
@@ -118,7 +121,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
             ArenaManager.RegisterArena(aNew);
             aNew.Save();
 
-            u.SendMessage(TranslationsUtil.Translate(u.Bukkit(), "arena-messages.arena-creation", true, new HashMap<>(){
+            u.SendMessage(translator.Translate(u.Bukkit(), "arena-messages.arena-creation", true, new HashMap<>(){
                 private static final long serialVersionUID = 1L;
 
                 {

@@ -10,6 +10,17 @@ import org.bukkit.entity.Player;
 import org.w3c.dom.Text;
 
 public class MessageUtil {
+
+    public static final String HL = "&m                                                &c";
+
+    public static String HL(int length) {
+        String hl = null;
+        for(int i = 0; i < length; i++) {
+            hl = hl + " ";
+        }
+
+        return "&m" + hl + "&r";
+    }
     private final static int CENTER_CHAT_PX = 154;
     private final static int MAX_CHAT_PX = 250;
 
@@ -106,17 +117,17 @@ public class MessageUtil {
     }
 
 	public static void UnknownSubCommand(User u) {
-        CenterMessage(u.Bukkit(), " ", TranslationsUtil.HL, " ", "&7Unknown sub-command.", "&7Type &b/kitpvp commands &7for help.", " ", TranslationsUtil.HL, " ");
+        CenterMessage(u.Bukkit(), " ", HL, " ", "&7Unknown sub-command.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
         u.Bukkit().playSound(u.Bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
 	}
 
 	public static void UnknownArgument(User u, String string) {
-        CenterMessage(u.Bukkit(), " ", TranslationsUtil.HL, " ", "&b" + string + " &7is not a valid argument.", "&7Type &b/kitpvp commands &7for help.", " ", TranslationsUtil.HL, " ");
+        CenterMessage(u.Bukkit(), " ", HL, " ", "&b" + string + " &7is not a valid argument.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
         u.Bukkit().playSound(u.Bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
 	}
 
 	public static void MissingArguments(User u) {
-        CenterMessage(u.Bukkit(), " ", TranslationsUtil.HL, " ", "&7Missing Arguments.", "&7Type &b/kitpvp commands &7for help.", " ", TranslationsUtil.HL, " ");
+        CenterMessage(u.Bukkit(), " ", HL, " ", "&7Missing Arguments.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
         u.Bukkit().playSound(u.Bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
 	}
 }

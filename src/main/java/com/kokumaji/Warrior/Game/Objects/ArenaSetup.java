@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import com.kokumaji.Warrior.Game.Managers.ArenaManager;
 import com.kokumaji.Warrior.Utils.CustomItem;
 import com.kokumaji.Warrior.Utils.MessageUtil;
-import com.kokumaji.Warrior.Utils.TranslationsUtil;
 
 public class ArenaSetup {
 
@@ -85,7 +84,7 @@ public class ArenaSetup {
     }
 
     private void InitSetup(SetupUser setupUser) {
-        MessageUtil.CenterMessage(setupUser.Bukkit(), TranslationsUtil.HL(8) + " &8[ &3&lArena Setup &8] " + TranslationsUtil.HL(8), "&7Now you have to define the arena region.", "&7Use the &bArena Region Wand &7to define", "&bPosition 1 &7and &bPosition 2 &7of your arena.");
+        MessageUtil.CenterMessage(setupUser.Bukkit(), MessageUtil.HL(8) + " &8[ &3&lArena Setup &8] " + MessageUtil.HL(8), "&7Now you have to define the arena region.", "&7Use the &bArena Region Wand &7to define", "&bPosition 1 &7and &bPosition 2 &7of your arena.");
         GiveTool(setupUser);
         setupUser.NextStep();
         //TODO: how to handle next steps???

@@ -3,6 +3,7 @@ package com.kokumaji.Warrior.Commands.General;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Game.Managers.MOTDManager;
@@ -10,8 +11,10 @@ import com.kokumaji.Warrior.Game.Managers.UserManager;
 import com.kokumaji.Warrior.Game.Objects.User;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
 import com.kokumaji.Warrior.Utils.MessageUtil;
-import com.kokumaji.Warrior.Utils.TranslationsUtil;
 
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -28,7 +31,9 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
 
     private Warrior self;
 
-    private String[] baseArguments = {"commands", "motd", "reload"};
+    private Translator translator;
+
+    private String[] baseArguments = {"commands", "motd", "placeholder", "reload"};
     private String[] reloadArguments = {"config", "motd"};
 
     public MainCommand(String commmandName, Plugin plugin) {
@@ -36,7 +41,7 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
 
         setDescription("Default KitPvP Command");
         this.self = (Warrior) plugin;
-
+        this.translator = Warrior.getTranslator();
         this.setTabCompleter(this);
     }
 
@@ -49,20 +54,21 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
     @Override
     public int Execute(CommandSender sender, String commandLabel, String[] args) {
         User u = UserManager.GetPlayer(((Player) sender).getUniqueId());
+        OfflinePlayer player = (OfflinePlayer) u.Bukkit();
 
         if(args.length == 0) {
             TextComponent github = new TextComponent("§7Developed by §bKokumaji");
             github.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/kokumaji"));
             github.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§bVisit GitHub Page")));
-            MessageUtil.CenterMessage(u.Bukkit(), " ", TranslationsUtil.HL, " ", "&3&lWarrior &8v1.0", github, "&7Type &b/Warrior help &7for commands.", " ", TranslationsUtil.HL, " ");
+            MessageUtil.CenterMessage(u.Bukkit(), " ", MessageUtil.HL, " ", "&3&lWarrior &8v1.0", github, "&7Type &b/Warrior help &7for commands.", " ", MessageUtil.HL, " ");
 
         } else if(args[0].equalsIgnoreCase("reload")) {
             if(args.length < 2 || args[1].equalsIgnoreCase("config")) {
-                String msg = TranslationsUtil.Translate("commands.reload-message", true);
+                String msg = translator.Translate(player,"commands.reload-message", true);
                 ConfigUtil.ReloadConfig(ConfigUtil.ConfigType.SETTINGS);
                 u.SendMessage(msg);
             } else if(args[1].equalsIgnoreCase("motd")) {
-                String msg = TranslationsUtil.Translate("commands.motd-reload-message", true);
+                String msg = translator.Translate(player, "commands.motd-reload-message", true);
                 MOTDManager mm = (MOTDManager) self.GetManager("motd");
                 mm.ReloadMOTD();
 
@@ -74,6 +80,12 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
         } else if(args[0].equalsIgnoreCase("motd")) {
             MOTDManager mm = (MOTDManager) self.GetManager("motd");
             mm.SendMOTD(u);
+        } else if(args[0].equalsIgnoreCase("placeholder")) {
+            OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+            String placeholder = args[2];
+
+            String parsed = translator.Translate(u.Bukkit(), "command.parse-placeholder", true) + translator.parsePlaceholder(target, placeholder);
+            u.SendMessage(parsed);
         } else {
             return 1;
         } 
@@ -109,6 +121,17 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                     }
                 } else {
                     return Arrays.asList(reloadArguments);
+                }
+            } else if(args[0].equalsIgnoreCase("placeholder")) {
+                if(args.length > 2) return null;
+                if(!args[1].equals("")) {
+                    for(Player p : Bukkit.getOnlinePlayers()) {
+                        if(p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
+                            options.add(p.getName());
+                        }
+                    }
+                } else {
+                    return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 }
             }
         }

@@ -4,6 +4,7 @@ general-messages:
 command:
   reload-message: "&bSuccessfully reloaded &7the plugin config!"
   motd-reload-message: "&bSuccessfully reloaded &7the motd file!"
+  parse-placeholder: "&7Result of placeholder: &r"
 arena-messages:
   arena-creation: "&7Successfully created arena &b{Arena}"
   arena-already-exists: "&7Arena &b{Arena} &7already exists."

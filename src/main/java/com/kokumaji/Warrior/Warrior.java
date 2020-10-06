@@ -19,12 +19,10 @@ import com.kokumaji.Warrior.Game.Managers.KitManager;
 import com.kokumaji.Warrior.Game.Managers.MOTDManager;
 import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import com.kokumaji.Warrior.Game.Managers.LobbyManager;
-import com.kokumaji.Warrior.Utils.ConfigUtil;
-import com.kokumaji.Warrior.Utils.DatabaseUtil;
-import com.kokumaji.Warrior.Utils.InternalMessages;
-import com.kokumaji.Warrior.Utils.NMSUtil;
-import com.kokumaji.Warrior.Utils.TranslationsUtil;
+import com.kokumaji.Warrior.Utils.*;
 
+import me.kokumaji.HibiscusAPI.HibiscusAPI;
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -41,7 +39,7 @@ public class Warrior extends JavaPlugin {
     private CommandMap cMap;
 
     NMSUtil nmsUtil;
-    TranslationsUtil transUtil;
+    static Translator translator;
     DatabaseUtil sqlUtil;
     LobbyManager lobbyManager;
     MOTDManager motdManager;
@@ -55,26 +53,28 @@ public class Warrior extends JavaPlugin {
             usePlaceholderAPI = true;
         }
 
-        this.getCommandMap();
-        cmds.add(new MainCommand("kitpvp", this));
-        cmds.add(new ArenaCommand("arena", this));
-        cmds.add(new KitCommand("kit", this));
-        cMap.registerAll(this.getName().toLowerCase(), cmds);
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-
         ConfigUtil.CopyConfig(false);
         c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
 
         try {
             //FIXME either utility or instance class
-            transUtil = new TranslationsUtil(c);
+            translator = new Translator(this, c, c.getBoolean("general-settings.use-placeholder-module"));
+            Translator.registerReplacer(new Placeholders("warrior"));
             nmsUtil = new NMSUtil();
-            
+
             lobbyManager = new LobbyManager(this);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        this.getCommandMap();
+        
+        cmds.add(new MainCommand("warrior", this));
+        cmds.add(new ArenaCommand("arena", this));
+        cmds.add(new KitCommand("kit", this));
+        cMap.registerAll(this.getName().toLowerCase(), cmds);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         ArenaManager.LoadArenas();
         KitManager.RegisterKits();
@@ -112,9 +112,12 @@ public class Warrior extends JavaPlugin {
         }
     }
 
+    public static Translator getTranslator() {
+        return translator;
+    }
+
     public Object GetUtil(String s) {
         if(s.contains("nms")) return nmsUtil;
-        if(s.contains("trans")) return transUtil;
         if(s.contains("sql")) return sqlUtil;
         return null;
     }
