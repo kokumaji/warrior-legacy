@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import com.kokumaji.Warrior.Commands.Game.ArenaCommand;
 import com.kokumaji.Warrior.Commands.Game.KitCommand;
 import com.kokumaji.Warrior.Commands.General.MainCommand;
+import com.kokumaji.Warrior.Game.Listeners.ChatListener;
 import com.kokumaji.Warrior.Game.Listeners.PlayerListener;
 import com.kokumaji.Warrior.Game.Managers.ArenaManager;
 import com.kokumaji.Warrior.Game.Managers.KitManager;
@@ -21,7 +22,6 @@ import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import com.kokumaji.Warrior.Game.Managers.LobbyManager;
 import com.kokumaji.Warrior.Utils.*;
 
-import me.kokumaji.HibiscusAPI.HibiscusAPI;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -48,20 +48,25 @@ public class Warrior extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PlaceholderExpansion(this).register();
-            usePlaceholderAPI = true;
-        }
 
         ConfigUtil.CopyConfig(false);
         c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
 
         try {
-            //FIXME either utility or instance class
-            translator = new Translator(this, c, c.getBoolean("general-settings.use-placeholder-module"));
-            Translator.registerReplacer(new Placeholders("warrior"));
-            nmsUtil = new NMSUtil();
+            String placeholderProvider = c.getString("use-modules.placeholder-manager");
+            if(placeholderProvider.equals("papi")) {
+                if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                    new PlaceholderExpansion(this).register();
+                    usePlaceholderAPI = true;
+                }
+            }
 
+            if(placeholderProvider.equals("native") || placeholderProvider.equals("both")) {
+                translator = new Translator(this, c, true);
+                Translator.registerReplacer(new Placeholders("warrior"));
+            }
+
+            nmsUtil = new NMSUtil();
             lobbyManager = new LobbyManager(this);
 
         } catch (Exception e) {
@@ -75,6 +80,7 @@ public class Warrior extends JavaPlugin {
         cmds.add(new KitCommand("kit", this));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ChatListener(), this);
 
         ArenaManager.LoadArenas();
         KitManager.RegisterKits();

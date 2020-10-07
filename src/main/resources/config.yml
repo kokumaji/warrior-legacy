@@ -20,8 +20,6 @@ general-settings:
 
   debug: true
 
-  use-placeholder-module: true
-
 chat-settings:
 
   announce-join: true
@@ -165,10 +163,11 @@ data-storage:
 use-modules:
   # always uses placeholderapi for now
   # will allow native in the future
-  placeholder-manager: papi
+  # Allowed: papi, native or both (default = both)
+  placeholder-manager: both
 
   # use built in chat manager
-  use-chat-manager: false
+  use-chat-manager: true
 
   # use native npc manager
   use-npc-manager: true

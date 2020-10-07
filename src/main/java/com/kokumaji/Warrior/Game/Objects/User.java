@@ -12,6 +12,8 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
@@ -24,6 +26,8 @@ public class User {
     private LanguageCode lang;
     private Arena arena;
     private boolean lobby;
+
+    private Object nmsPlayer;
 
     private int killstreak = 0;
     private int kills;
@@ -41,10 +45,32 @@ public class User {
         kills = pStats.KILLS;
         deaths = pStats.DEATHS;
         coins = pStats.COINS;
+
+        try {
+            nmsPlayer = Bukkit().getClass().getMethod("getHandle").invoke(Bukkit());
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     public Player Bukkit() {
         return player;
+    }
+
+    public Object NMS() {
+        return nmsPlayer;
+    }
+
+    public int GetPing() throws IllegalAccessException {
+        try {
+            Field fieldPing = nmsPlayer.getClass().getDeclaredField("ping");
+            fieldPing.setAccessible(true);
+            return fieldPing.getInt(nmsPlayer);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     public void SendMessage(String pMessage) {
