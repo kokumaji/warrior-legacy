@@ -1,0 +1,61 @@
+###############################################
+# KITPVP PLUGIN REWRITE - TODO                #
+###############################################
+
+## GENERAL STUFF ##
+- implement PAPI support
+- sound effects & particles 
+
+## KIT LOGIC ##
+- disable armor damage (configurable)
+- legacy vs custom soup:
+  custom mode: configurable heal item, stacked
+  amount of heal items displayed in action bar,
+  refill after killstreak reached. 
+  legacy mode: fill inventory with soup, refill
+  with sign or killstreak (configurable)
+- display arrows & stew left as action message (nms)
+- special abilities per kit. 
+- implement kit shop (free version kit/command only)
+  premium version will include physical per player
+  kit shop with armor stands and kit preview mode.
+  (each kit can be played twice in real arena OR 
+  in a custom PvE playground)
+
+## ARENA LOGIC ##
+- create arena at player location
+- (premium) worldguard-like gameflags
+
+## LOBBY LOGIC ##
+- arena signs 
+- implement guis for lobby items
+
+## KILLSTREAK LOGIC ##
+- (PREMIUM ONLY!!!) Killstreak rewards, players can
+  unlock killstreak rewards with coins, can be stats boost,
+  xp/coin booster, mines etc.
+- (PREMIUM ONLY!!!) Player with highest killstreak (and +10 kills)
+  is champion, will be "marked for death", higher rewards. 
+- announce kill streak every X kills
+
+## QUEST LOGIC (PREMIUM) ##
+- auto generated daily/weekly/monthly quests
+- custom, event ready quests
+
+## STATS LOGIC (PREMIUM) ##
+- public api to get stats data of users
+- create sign/hologram based leaderboards in lobby
+- daily/weekly/monthly stats reset (seasons??? rewards???)
+
+## EXPERIMENTAL (NON-MVP) ##
+- ranking system
+- more sound/particle effects (custom resource pack support?)
+- make EVERYTHING configurable
+- custom language file(s)
+- 1v1 mode
+- custom (per player) kits for 1v1
+
+## MORE STUFF ##
+- sort/re-evaluate shit pls
+-  leveling system, (maybe) crates and seasonal rewards
+

@@ -99,8 +99,8 @@ public class Arena {
         return region;
     }
 
-    public boolean IsInRegion(User user) {
-        return region.contains(user.Bukkit().getLocation());
+    public boolean IsInRegion(WarriorUser user) {
+        return region.contains(user.bukkit().getLocation());
     }
 
     public Location GetSpawn() {
@@ -111,9 +111,9 @@ public class Arena {
         this.spawn = loc;
     }
 
-    public void Teleport(User user) {
-        user.Teleport(spawn);
-        user.InLobby(false);
+    public void Teleport(WarriorUser user) {
+        user.teleport(spawn);
+        user.inLobby(false);
     }
 
     public ArrayList<GameFlag> GetGameFlags() {

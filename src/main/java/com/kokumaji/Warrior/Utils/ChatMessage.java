@@ -30,12 +30,16 @@ public class ChatMessage {
         if(pl.hasPermission("warrior.chat.color"))
             c = Translator.ApplyColor(c);
 
-        return new TextComponent(" » " + c);
+        return new TextComponent(" §7» §r" + c);
     }
 
     public TextComponent getChatMessage() {
         TextComponent component = new TextComponent(header, tail);
         return component;
+    }
+
+    public TextComponent getTail() {
+        return tail;
     }
 
     protected TextComponent setHeader() {
@@ -50,7 +54,7 @@ public class ChatMessage {
 
     private TextComponent playerHover() {
         TextComponent tooltip = new TextComponent();
-        tooltip.setText("&3&l&o" + p.getName() + "'s Stats\n&8» &7Kills: &f{warrior_player:kills}\n&8» &7Deaths: &f{warrior_player:deaths}\n&8» &7KDR: &f{warrior_player:kdr}");
+        tooltip.setText("&3&l&o{warrior:player}'s Stats\n&8» &7Kills: &f{warrior:kills}\n&8» &7Deaths: &f{warrior:deaths}\n&8» &7KDR: &f{warrior:kdr}");
         return tooltip;
     }
 }

@@ -6,16 +6,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import org.bukkit.entity.Player;
 
 import com.kokumaji.Warrior.Game.Objects.Arena;
-import com.kokumaji.Warrior.Game.Objects.User;
 
 public class UserManager {
 
-    private static Map<UUID, User> playerMap = new HashMap<UUID, User>();
+    private static Map<UUID, WarriorUser> playerMap = new HashMap<UUID, WarriorUser>();
     private static final Set<Player> playersWithKit = new HashSet<>();
-    private static User champ = null;
+    private static WarriorUser champ = null;
 
     public static void RemovePlayer(UUID uniqueId) {
         if(playerMap.containsKey(uniqueId)) {
@@ -23,9 +24,9 @@ public class UserManager {
         }
     }
 
-    public static void AddPlayer(User User) {
-        if(!playerMap.containsKey(User.GetUUID())) {
-            playerMap.put(User.GetUUID(), User);
+    public static void AddPlayer(WarriorUser user) {
+        if(!playerMap.containsKey(user.getUUID())) {
+            playerMap.put(user.getUUID(), user);
         }
     }
 
@@ -34,30 +35,30 @@ public class UserManager {
         return false;
     }
 
-    public static User GetPlayer(UUID uniqueID) {
+    public static WarriorUser GetPlayer(UUID uniqueID) {
         if(IsCached(uniqueID)) return playerMap.get(uniqueID);
         return null;
     }
 
-    public static Collection<User> GetPlayers() {
+    public static Collection<WarriorUser> GetPlayers() {
         return playerMap.values();
     }
 
-    public static Set<User> GetPlayers(Arena arena) {
-        Set<User> users = new HashSet<User>();
-        for(User user : playerMap.values()) {
-            if(user.GetArena() == arena) users.add(user);
+    public static Set<WarriorUser> GetPlayers(Arena arena) {
+        Set<WarriorUser> users = new HashSet<WarriorUser>();
+        for(WarriorUser user : playerMap.values()) {
+            if(user.getArena() == arena) users.add(user);
         }
         return users;
     }
 
-    public static User GetChampion() {
+    public static WarriorUser GetChampion() {
         return champ;
     }
 
-    public static void SetChampion(User user) {
+    public static void SetChampion(WarriorUser user) {
         if(champ == null) champ = user;
-        if(champ.GetStreak() < user.GetStreak()) champ = user;
+        if(champ.getStreak() < user.getStreak()) champ = user;
     }
 
     public static void ClearChampion() {

@@ -1,13 +1,12 @@
 package com.kokumaji.Warrior.Utils;
 
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import net.md_5.bungee.api.chat.TextComponent;
 
-import com.kokumaji.Warrior.Game.Objects.User;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.w3c.dom.Text;
 
 public class MessageUtil {
 
@@ -116,18 +115,18 @@ public class MessageUtil {
         }
     }
 
-	public static void UnknownSubCommand(User u) {
-        CenterMessage(u.Bukkit(), " ", HL, " ", "&7Unknown sub-command.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
-        u.Bukkit().playSound(u.Bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
+	public static void UnknownSubCommand(WarriorUser u) {
+        CenterMessage(u.bukkit(), " ", HL, " ", "&7Unknown sub-command.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
+        u.bukkit().playSound(u.bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
 	}
 
-	public static void UnknownArgument(User u, String string) {
-        CenterMessage(u.Bukkit(), " ", HL, " ", "&b" + string + " &7is not a valid argument.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
-        u.Bukkit().playSound(u.Bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
+	public static void UnknownArgument(WarriorUser u, String string) {
+        CenterMessage(u.bukkit(), " ", HL, " ", "&b" + string + " &7is not a valid argument.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
+        u.bukkit().playSound(u.bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
 	}
 
-	public static void MissingArguments(User u) {
-        CenterMessage(u.Bukkit(), " ", HL, " ", "&7Missing Arguments.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
-        u.Bukkit().playSound(u.Bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
+	public static void MissingArguments(WarriorUser u) {
+        CenterMessage(u.bukkit(), " ", HL, " ", "&7Missing Arguments.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
+        u.bukkit().playSound(u.bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
 	}
 }

@@ -68,7 +68,6 @@ public class Warrior extends JavaPlugin {
 
             nmsUtil = new NMSUtil();
             lobbyManager = new LobbyManager(this);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

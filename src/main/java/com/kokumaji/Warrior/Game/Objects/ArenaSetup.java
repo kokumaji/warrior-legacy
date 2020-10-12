@@ -14,7 +14,7 @@ import com.kokumaji.Warrior.Utils.MessageUtil;
 
 public class ArenaSetup {
 
-    class SetupUser extends User {
+    class SetupUser extends WarriorUser {
 
         int setupStep;
         String arenaName;
@@ -27,14 +27,14 @@ public class ArenaSetup {
 
         Location arenaSpawn; 
 
-        SetupUser(User pUser, String pArenaName) {
-            super(pUser.Bukkit(), pUser.GetStats());
+        SetupUser(WarriorUser pUser, String pArenaName) {
+            super(pUser.bukkit(), pUser.getStats());
             setupStep = 0;
 
-            this.inv = pUser.Bukkit().getInventory();
-            pUser.Bukkit().getInventory().clear();
+            this.inv = pUser.bukkit().getInventory();
+            pUser.bukkit().getInventory().clear();
 
-            setupMap.put(pUser.GetUUID(), this);
+            setupMap.put(pUser.getUUID(), this);
             this.arenaName = pArenaName;
         }
 
@@ -70,7 +70,7 @@ public class ArenaSetup {
 
     private static HashMap<UUID, SetupUser> setupMap = new HashMap<UUID, SetupUser>();
 
-    public ArenaSetup(String pArena, User pUser) {
+    public ArenaSetup(String pArena, WarriorUser pUser) {
         if(IsSetupUser(pUser)) {
             //pUser.SendMessage(TranslationsUtil.Translate(pUser.Bukkit(), "arena-setup.already-in-setup", true));
             return;
@@ -84,7 +84,7 @@ public class ArenaSetup {
     }
 
     private void InitSetup(SetupUser setupUser) {
-        MessageUtil.CenterMessage(setupUser.Bukkit(), MessageUtil.HL(8) + " &8[ &3&lArena Setup &8] " + MessageUtil.HL(8), "&7Now you have to define the arena region.", "&7Use the &bArena Region Wand &7to define", "&bPosition 1 &7and &bPosition 2 &7of your arena.");
+        MessageUtil.CenterMessage(setupUser.bukkit(), MessageUtil.HL(8) + " &8[ &3&lArena Setup &8] " + MessageUtil.HL(8), "&7Now you have to define the arena region.", "&7Use the &bArena Region Wand &7to define", "&bPosition 1 &7and &bPosition 2 &7of your arena.");
         GiveTool(setupUser);
         setupUser.NextStep();
         //TODO: how to handle next steps???
@@ -93,13 +93,13 @@ public class ArenaSetup {
     private void GiveTool(SetupUser setupUser) {
         ItemStack tool = CustomItem.Create(Material.STICK, "&bArena Region Wand", 1, true, "&7Use this tool to define", "&7the region for your arena");
         ItemStack exit = CustomItem.Create(Material.BARRIER, "&cCancel Arena Creation", 1, true, "&7Use this tool to cancel", "&7the arena creation progress.");
-        setupUser.Bukkit().getInventory().setItem(0, tool);
-        setupUser.Bukkit().getInventory().setItem(0, exit);
+        setupUser.bukkit().getInventory().setItem(0, tool);
+        setupUser.bukkit().getInventory().setItem(0, exit);
     }
 
-    public static boolean IsSetupUser(User user) {
+    public static boolean IsSetupUser(WarriorUser user) {
         for(SetupUser su : setupMap.values()) {
-            if(su.GetUUID().equals(user.GetUUID())) return true;
+            if(su.getUUID().equals(user.getUUID())) return true;
         }
 
         return false;

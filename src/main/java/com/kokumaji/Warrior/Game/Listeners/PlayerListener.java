@@ -3,8 +3,8 @@ package com.kokumaji.Warrior.Game.Listeners;
 import com.kokumaji.Warrior.Game.Managers.LobbyManager;
 import com.kokumaji.Warrior.Game.Managers.MOTDManager;
 import com.kokumaji.Warrior.Game.Managers.UserManager;
-import com.kokumaji.Warrior.Game.Objects.User;
 import com.kokumaji.Warrior.Game.Objects.UserStats;
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Utils.*;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
@@ -32,7 +32,7 @@ public class PlayerListener implements Listener {
             dbUtil.Execute("INSERT IGNORE INTO $table_player_stats VALUES ('" + p.getUniqueId() + "', 0, 0, 0, 'en_US')");
 
             UserStats stats = dbUtil.GetUserData(p.getUniqueId());
-            User user = new User(p, stats);
+            WarriorUser user = new WarriorUser(p, stats);
             UserManager.AddPlayer(user);
 
             FileConfiguration c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
@@ -49,14 +49,14 @@ public class PlayerListener implements Listener {
                 LobbyManager lm = (LobbyManager) self.GetManager("lobby");
                 lm.TeleportPlayer(user);
 
-                user.PlaySound(sound);
+                user.playSound(sound);
             }
 
             if(c.getBoolean("chat-settings.announce-join")) {
                 e.setJoinMessage(null);
                 Translator t = Warrior.getTranslator();
-                for(User u : UserManager.GetPlayers()) {
-                    u.SendMessage(t.Translate(p, "general-messages.join-message", true, new HashMap<String, String>() {
+                for(WarriorUser u : UserManager.GetPlayers()) {
+                    u.sendMessage(t.Translate(p, "general-messages.join-message", true, new HashMap<String, String>() {
                         {
                             put("Player", p.getName());
                             put("Online", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
@@ -77,8 +77,8 @@ public class PlayerListener implements Listener {
     public void OnPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         if(UserManager.IsCached(p.getUniqueId())) {
-            User user = UserManager.GetPlayer(p.getUniqueId());
-            user.SaveData(self);
+            WarriorUser user = UserManager.GetPlayer(p.getUniqueId());
+            user.saveData(self);
             UserManager.RemovePlayer(p.getUniqueId());
 
             FileConfiguration c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
@@ -89,8 +89,8 @@ public class PlayerListener implements Listener {
             if(c.getBoolean("chat-settings.announce-quit")) {
                 e.setQuitMessage(null);
                 Translator t = Warrior.getTranslator();
-                for(User u : UserManager.GetPlayers()) {
-                    u.SendMessage(t.Translate(p, "general-messages.quit-message", true, new HashMap<String, String>() {
+                for(WarriorUser u : UserManager.GetPlayers()) {
+                    u.sendMessage(t.Translate(p, "general-messages.quit-message", true, new HashMap<String, String>() {
                         {
                             put("Player", p.getName());
                             put("Online", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));

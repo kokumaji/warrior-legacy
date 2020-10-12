@@ -1,6 +1,6 @@
 package com.kokumaji.Warrior.Game.Managers;
 
-import com.kokumaji.Warrior.Game.Objects.User;
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
 import com.kokumaji.Warrior.Utils.CustomItem;
 import org.bukkit.Bukkit;
@@ -49,11 +49,11 @@ public class LobbyManager {
         return location != null ? location : Bukkit.getWorlds().get(0).getSpawnLocation();
     }
 
-    public void TeleportPlayer(User user) {
-        user.Teleport(GetSpawn());
-        SetInventory(user.Bukkit());
+    public void TeleportPlayer(WarriorUser user) {
+        user.teleport(GetSpawn());
+        SetInventory(user.bukkit());
 
-        user.InLobby(true);
+        user.inLobby(true);
     }
 
     private void SetInventory(Player player) {

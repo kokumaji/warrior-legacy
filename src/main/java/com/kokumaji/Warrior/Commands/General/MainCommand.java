@@ -5,16 +5,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Game.Managers.MOTDManager;
 import com.kokumaji.Warrior.Game.Managers.UserManager;
-import com.kokumaji.Warrior.Game.Objects.User;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
 import com.kokumaji.Warrior.Utils.MessageUtil;
 
+import me.kokumaji.HibiscusAPI.api.translation.ChatMessage;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -46,37 +49,36 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
     }
 
     @Override
-    public void onSyntaxError(CommandSender sender, String label, String[] args, int exitCode) {
-        User u = UserManager.GetPlayer(((Player) sender).getUniqueId());
-        MessageUtil.UnknownSubCommand(u);
+    public void onSyntaxError(CommandSender sender, String label, String[] args) {
+
     }
 
     @Override
-    public int Execute(CommandSender sender, String commandLabel, String[] args) {
-        User u = UserManager.GetPlayer(((Player) sender).getUniqueId());
-        OfflinePlayer player = (OfflinePlayer) u.Bukkit();
+    public boolean Execute(CommandSender sender, String commandLabel, String[] args) {
+        WarriorUser u = UserManager.GetPlayer(((Player) sender).getUniqueId());
+        OfflinePlayer player = (OfflinePlayer) u.bukkit();
 
         if(args.length == 0) {
             TextComponent github = new TextComponent("§7Developed by §bKokumaji");
             github.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/kokumaji"));
             github.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§bVisit GitHub Page")));
-            MessageUtil.CenterMessage(u.Bukkit(), " ", MessageUtil.HL, " ", "&3&lWarrior &8v1.0", github, "&7Type &b/Warrior help &7for commands.", " ", MessageUtil.HL, " ");
+            MessageUtil.CenterMessage(u.bukkit(), " ", MessageUtil.HL, " ", "&3&lWarrior &8v1.0", github, "&7Type &b/Warrior help &7for commands.", " ", MessageUtil.HL, " ");
 
         } else if(args[0].equalsIgnoreCase("reload")) {
             if(args.length < 2 || args[1].equalsIgnoreCase("config")) {
                 String msg = translator.Translate(player,"commands.reload-message", true);
                 ConfigUtil.ReloadConfig(ConfigUtil.ConfigType.SETTINGS);
-                u.SendMessage(msg);
+                u.sendMessage(msg);
             } else if(args[1].equalsIgnoreCase("motd")) {
                 String msg = translator.Translate(player, "commands.motd-reload-message", true);
                 MOTDManager mm = (MOTDManager) self.GetManager("motd");
                 mm.ReloadMOTD();
 
-                u.SendMessage(msg);
+                u.sendMessage(msg);
             }
 
         } else if(args[0].equalsIgnoreCase("commands")) {
-            u.SendMessage("send commands gui");
+            u.sendMessage("send commands gui");
         } else if(args[0].equalsIgnoreCase("motd")) {
             MOTDManager mm = (MOTDManager) self.GetManager("motd");
             mm.SendMOTD(u);
@@ -84,13 +86,21 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
             OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
             String placeholder = args[2];
 
-            String parsed = translator.Translate(u.Bukkit(), "command.parse-placeholder", true) + translator.parsePlaceholder(target, placeholder);
-            u.SendMessage(parsed);
-        } else {
-            return 1;
-        } 
+            String parsed = translator.Translate(u.bukkit(), "command.parse-placeholder", true) + translator.parsePlaceholder(target, placeholder);
+            u.sendMessage(parsed);
+        } else if(args[0].equalsIgnoreCase("debug")) {
 
-        return 0;
+            ChatMessage msg = new ChatMessage(Translator.ApplyColor("&7A new version of &3&lWarrior &7is available!"))
+                                    .setTooltip("&a&l↑ &7Click to update!")
+                                    .setLink("https://github.com");
+
+            u.sendMessage(msg);
+            u.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+        }else {
+            return true;
+        }
+
+        return true;
     }
 
     @Override

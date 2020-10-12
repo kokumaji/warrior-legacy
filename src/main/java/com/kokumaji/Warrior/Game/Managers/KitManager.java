@@ -1,5 +1,6 @@
 package com.kokumaji.Warrior.Game.Managers;
 
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kokumaji.Warrior.Game.Objects.Kit;
-import com.kokumaji.Warrior.Game.Objects.User;
 import com.kokumaji.Warrior.Game.Objects.Kits.Archer;
 import com.kokumaji.Warrior.Utils.InternalMessages;
 
@@ -56,12 +56,12 @@ public class KitManager {
         else return kits.get(pID - 1);
     }
 
-    public static void SetKit(User u, Kit k) {
+    public static void SetKit(WarriorUser u, Kit k) {
         if (k != null) {
-            u.Bukkit().getInventory().clear();
-            k.GiveKit(u.Bukkit());
+            u.bukkit().getInventory().clear();
+            k.GiveKit(u.bukkit());
         } else {
-            InternalMessages.KIT_NOT_FOUND.Log(u.GetUsername());
+            InternalMessages.KIT_NOT_FOUND.Log(u.getUsername());
         }
     }
 

@@ -2,6 +2,7 @@ package com.kokumaji.Warrior.Game.Listeners;
 
 import com.kokumaji.Warrior.Utils.ChatMessage;
 import com.kokumaji.Warrior.Warrior;
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,12 +25,15 @@ public class ChatListener implements Listener {
 
             e.setCancelled(true);
 
-            ChatMessage msg = new ChatMessage(p, content);
+
+            Translator t = Warrior.getTranslator();
+            ChatMessage msg = new ChatMessage(p, t.parsePlaceholder(e.getPlayer(), content));
+
             for(Player pl : Bukkit.getOnlinePlayers()) {
                 pl.spigot().sendMessage(msg.getChatMessage());
             }
-
-            System.out.println(msg.getChatMessage().toPlainText());
+            
+            System.out.println(t.parsePlaceholder(e.getPlayer(), msg.getChatMessage().toPlainText()));
         }
 
     }

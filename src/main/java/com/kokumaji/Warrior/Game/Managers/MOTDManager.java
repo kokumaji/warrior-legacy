@@ -1,6 +1,6 @@
 package com.kokumaji.Warrior.Game.Managers;
 
-import com.kokumaji.Warrior.Game.Objects.User;
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Utils.MessageUtil;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,12 +40,12 @@ public class MOTDManager {
         }
     }
 
-    public void SendMOTD(User user) {
+    public void SendMOTD(WarriorUser user) {
         for(String s : motdLines) {
             if(s.startsWith("{CENTER}")) {
-                MessageUtil.CenterMessage(user.Bukkit(), s.replace("{CENTER}", ""));
+                MessageUtil.CenterMessage(user.bukkit(), s.replace("{CENTER}", ""));
             } else {
-                user.SendMessage(s);
+                user.sendMessage(s);
             }
         }
     }

@@ -1,0 +1,8 @@
+First Join:
+- Player gets to select class and one skill (if enabled)
+
+Levelling:
+-
+
+Skills:
+- easy to understand language to code skill behaviour

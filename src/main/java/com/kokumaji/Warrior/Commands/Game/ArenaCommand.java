@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Game.Managers.ArenaManager;
 import com.kokumaji.Warrior.Game.Managers.UserManager;
 import com.kokumaji.Warrior.Game.Objects.Arena;
-import com.kokumaji.Warrior.Game.Objects.User;
 import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
 import com.kokumaji.Warrior.Game.Objects.GUIs.ArenaGUI;
 import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
@@ -40,24 +40,13 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     }
 
     @Override
-    public void onSyntaxError(CommandSender sender, String label, String[] args, int exitCode) {
-        User u = UserManager.GetPlayer(((Player) sender).getUniqueId());
-        switch (exitCode) {
-            case 1:
-                MessageUtil.UnknownSubCommand(u);
-                break;
-            case 2:
-                MessageUtil.UnknownArgument(u, args[args.length - 1]);
-                break;
-            case 3:
-                MessageUtil.MissingArguments(u);
-        }
+    public void onSyntaxError(CommandSender sender, String label, String[] args) {
 
     }
 
     @Override
-    public int Execute(CommandSender sender, String commandLabel, String[] args) {
-        User u = UserManager.GetPlayer(((Player) sender).getUniqueId());
+    public boolean Execute(CommandSender sender, String commandLabel, String[] args) {
+        WarriorUser u = UserManager.GetPlayer(((Player) sender).getUniqueId());
         FileConfiguration c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
 
         if (args.length == 0) {
@@ -66,17 +55,17 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
             Bukkit.getScheduler().runTask(self, new Runnable() {
                 @Override
                 public void run() {
-                    aGUI.BuildGUI(u.Bukkit());
+                    aGUI.BuildGUI(u.bukkit());
                 }
             });
         } else if (args[0].equalsIgnoreCase("join")) {
             if (args.length < 2)
-                return 3;
+                return true;
 
             Arena a = ArenaManager.GetArena(args[1]);
 
             if (a == null)
-                return 2;
+                return true;
 
             Bukkit.getScheduler().runTask(self, new Runnable() {
                 @Override
@@ -88,11 +77,11 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                    if(!c.getString("arena-settings.play-teleport-sound").toLowerCase().equals("none"))
                        s = Sound.valueOf(c.getString("arena-settings.play-teleport-sound").toUpperCase());
                    
-                   u.PlaySound(s);
+                   u.playSound(s);
                 }
             });
 
-            u.SendMessage(translator.Translate(u.Bukkit(), "arena-messages.arena-teleport", true, new HashMap<>(){
+            u.sendMessage(translator.Translate(u.bukkit(), "arena-messages.arena-teleport", true, new HashMap<>(){
                 private static final long serialVersionUID = 1L;
 
                 {
@@ -102,26 +91,26 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
             
         } else if (args[0].equalsIgnoreCase("create")) {
             if (args.length < 2) 
-                return 3;
+                return true;
 
             Arena a = ArenaManager.GetArena(args[1]);
             
             if(a != null) {
-                u.SendMessage(translator.Translate(u.Bukkit(), "arena-messages.arena-already-exists", true, new HashMap<>(){
+                u.sendMessage(translator.Translate(u.bukkit(), "arena-messages.arena-already-exists", true, new HashMap<>(){
                     private static final long serialVersionUID = 1L;
     
                     {
                         put("Arena", args[1]);
                     }
                 }));
-                return 0;
+                return true;
             }
 
-            Arena aNew = new Arena(args[1], 0, u.Bukkit().getLocation(), 16);
+            Arena aNew = new Arena(args[1], 0, u.bukkit().getLocation(), 16);
             ArenaManager.RegisterArena(aNew);
             aNew.Save();
 
-            u.SendMessage(translator.Translate(u.Bukkit(), "arena-messages.arena-creation", true, new HashMap<>(){
+            u.sendMessage(translator.Translate(u.bukkit(), "arena-messages.arena-creation", true, new HashMap<>(){
                 private static final long serialVersionUID = 1L;
 
                 {
@@ -129,12 +118,12 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                 }
             }));
 
-            return 0;
+            return true;
         } else {
-            return 1;
+            return true;
         }
 
-        return 0;
+        return true;
     }
 
     @Override
