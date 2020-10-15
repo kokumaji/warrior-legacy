@@ -91,7 +91,7 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
         } else if(args[0].equalsIgnoreCase("debug")) {
 
             ChatMessage msg = new ChatMessage(Translator.ApplyColor("&7A new version of &3&lWarrior &7is available!"))
-                                    .setTooltip("&a&l↑ &7Click to update!")
+                                    .setTooltip("&a&l↑ &7Click to update!", "&8Open Web Link")
                                     .setLink("https://github.com");
 
             u.sendMessage(msg);

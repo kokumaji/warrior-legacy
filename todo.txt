@@ -2,9 +2,18 @@
 # KITPVP PLUGIN REWRITE - TODO                #
 ###############################################
 
+## MOVE CHAT TO EXTERNAL MODULE ##
+
 ## GENERAL STUFF ##
 - implement PAPI support
-- sound effects & particles 
+- sound effects & particles
+- VaultAPI integration
+
+## GAMELOGIC (+ FIRST JOIN) ##
+- player gets to select a class,
+  which provides base bonuses
+  (e.g. archer -> mining fatigue but
+  slighty faster walk speed)
 
 ## KIT LOGIC ##
 - disable armor damage (configurable)
@@ -22,6 +31,15 @@
   (each kit can be played twice in real arena OR 
   in a custom PvE playground)
 
+## SKILLS LOGIC ##
+- Skills are recharged per killstreak reached,
+  plugin with come with easy to understand API
+  to code custom skills/modify behaviour of
+  existing skills. May also include custom
+  "coding" language to describe skill behaviour
+  in a file (FILE.skill).
+- make killstreak trigger skills??
+
 ## ARENA LOGIC ##
 - create arena at player location
 - (premium) worldguard-like gameflags
@@ -37,15 +55,22 @@
 - (PREMIUM ONLY!!!) Player with highest killstreak (and +10 kills)
   is champion, will be "marked for death", higher rewards. 
 - announce kill streak every X kills
+- Use BarAPI for optional killstreak progress in bossbar??
 
 ## QUEST LOGIC (PREMIUM) ##
 - auto generated daily/weekly/monthly quests
 - custom, event ready quests
 
+## LEVELING SYSTEM ##
+- players earn xp per kill(-streak)
+- quests can provide xp boost or huge
+  amount of xp as reward.
+
 ## STATS LOGIC (PREMIUM) ##
 - public api to get stats data of users
 - create sign/hologram based leaderboards in lobby
 - daily/weekly/monthly stats reset (seasons??? rewards???)
+- MMR calculation
 
 ## EXPERIMENTAL (NON-MVP) ##
 - ranking system
