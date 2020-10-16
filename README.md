@@ -1,11 +1,16 @@
 ![Warrior Plugin Logo](assets/warrior_logo.png?raw=true "Warrior Logo")
-<br>
 ---
-<br>
-This is the private repository of my upcoming [`PaperMC`](https://github.com/papermc/paper) plugin 'Warrior'. 
+**Warrior** is a fully customizable, class-based competitive FFA plugin. Its easy
+to understand commands & integrated script system allows you to add/remove content as you wish!
 
-# Features ✨
+## Features
 - Fast & simple arena creation
-- A set of interesting, predefined kits 
-- Beatiful GUIs
-- **Highly** customizable!
+- Advanced skill system
+- Killstreak based rewards
+- Quest & Achievement system
+- Custom chat manager
+- Easy to use placeholders
+- 50+ **different** weapons
+- 8 preconfigured classes
+
+And much more... 
