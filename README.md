@@ -1,5 +1,7 @@
-![Warrior Logo](../assets/assets/images/warrior_logo.png)
-# KitPvP Plugin (Codename 'Warrior') 🛡️
+![Warrior Plugin Logo](assets/warrior_logo.png?raw=true "Warrior Logo")
+<br>
+---
+<br>
 This is the private repository of my upcoming [`PaperMC`](https://github.com/papermc/paper) plugin 'Warrior'. 
 
 # Features ✨
