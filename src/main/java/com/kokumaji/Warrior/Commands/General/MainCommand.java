@@ -5,30 +5,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kokumaji.Warrior.Game.Objects.GUIs.ClassGUI;
+import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import com.kokumaji.Warrior.Game.Objects.WarriorUser;
+import com.kokumaji.Warrior.Utils.Hologram;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Game.Managers.MOTDManager;
 import com.kokumaji.Warrior.Game.Managers.UserManager;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
 import com.kokumaji.Warrior.Utils.MessageUtil;
 
+import me.kokumaji.HibiscusAPI.api.particle.ParticleSystem;
+import me.kokumaji.HibiscusAPI.api.particle.shape.Circle;
 import me.kokumaji.HibiscusAPI.api.translation.ChatMessage;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
+
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+
 
 public class MainCommand extends AsyncCommand implements TabCompleter {
 
@@ -55,48 +56,84 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
 
     @Override
     public boolean Execute(CommandSender sender, String commandLabel, String[] args) {
-        WarriorUser u = UserManager.GetPlayer(((Player) sender).getUniqueId());
-        OfflinePlayer player = (OfflinePlayer) u.bukkit();
+        WarriorUser user = UserManager.GetPlayer(((Player) sender).getUniqueId());
+        OfflinePlayer player = user.bukkit();
 
         if(args.length == 0) {
-            TextComponent github = new TextComponent("§7Developed by §bKokumaji");
-            github.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/kokumaji"));
-            github.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§bVisit GitHub Page")));
-            MessageUtil.CenterMessage(u.bukkit(), " ", MessageUtil.HL, " ", "&3&lWarrior &8v1.0", github, "&7Type &b/Warrior help &7for commands.", " ", MessageUtil.HL, " ");
+            ChatMessage github = new ChatMessage("§7Developed by §bKokumaji")
+                    .setLink("https://github.com/kokumaji")
+                    .setTooltip(translator.parsePlaceholder(player, Translator.applyColor("&b&l{char:arrow_up} &7Visit GitHub Page")));
+
+            MessageUtil.CenterMessage(user.bukkit(), " ", MessageUtil.HL, " ", "&3&lWarrior &8v1.0", github.getComponent(), "&7Type &b/warrior commands &7for commands.", " ", MessageUtil.HL, " ");
 
         } else if(args[0].equalsIgnoreCase("reload")) {
             if(args.length < 2 || args[1].equalsIgnoreCase("config")) {
-                String msg = translator.Translate(player,"commands.reload-message", true);
+                String msg = translator.Translate(player,"command.reload-message", true);
                 ConfigUtil.ReloadConfig(ConfigUtil.ConfigType.SETTINGS);
-                u.sendMessage(msg);
+                user.sendMessage(msg);
             } else if(args[1].equalsIgnoreCase("motd")) {
-                String msg = translator.Translate(player, "commands.motd-reload-message", true);
+                String msg = translator.Translate(player, "command.motd-reload-message", true);
                 MOTDManager mm = (MOTDManager) self.GetManager("motd");
                 mm.ReloadMOTD();
 
-                u.sendMessage(msg);
+                user.sendMessage(msg);
             }
 
         } else if(args[0].equalsIgnoreCase("commands")) {
-            u.sendMessage("send commands gui");
+            user.sendMessage("send commands gui");
         } else if(args[0].equalsIgnoreCase("motd")) {
             MOTDManager mm = (MOTDManager) self.GetManager("motd");
-            mm.SendMOTD(u);
+            mm.SendMOTD(user);
         } else if(args[0].equalsIgnoreCase("placeholder")) {
             OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
             String placeholder = args[2];
 
-            String parsed = translator.Translate(u.bukkit(), "command.parse-placeholder", true) + translator.parsePlaceholder(target, placeholder);
-            u.sendMessage(parsed);
+            String parsed = translator.Translate(user.bukkit(), "command.parse-placeholder", true) + translator.parsePlaceholder(target, placeholder);
+            user.sendMessage(parsed);
+        } else if(args[0].equalsIgnoreCase("class")) {
+            ClassGUI aGUI = (ClassGUI) GUIHandler.GetGUI("class");
+
+            Bukkit.getScheduler().runTask(self, new Runnable() {
+                @Override
+                public void run() {
+                    aGUI.BuildGUI(user.bukkit());
+                }
+            });
         } else if(args[0].equalsIgnoreCase("debug")) {
+            Hologram hg = new Hologram(user.bukkit().getLocation(), "Test Hologram");
 
-            ChatMessage msg = new ChatMessage(Translator.ApplyColor("&7A new version of &3&lWarrior &7is available!"))
-                                    .setTooltip("&a&l↑ &7Click to update!", "&8Open Web Link")
-                                    .setLink("https://github.com");
+            String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-            u.sendMessage(msg);
-            u.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-        }else {
+            user.sendActionBar(translator.parsePlaceholder(user.bukkit(), message));
+
+        } else if(args[0].equalsIgnoreCase("effect")) {
+            ParticleSystem ps = new ParticleSystem(self, user.bukkit().getLocation());
+            ps.setParticle(Particle.LAVA);
+            ps.shape(new Circle(0, 0, 0, 3), ps.getParticle());
+
+                        /*ps.parametric2(Particle.valueOf(args[1]), 1, new ParticleSystem.Parametric2() {
+
+                        @Override
+                        public double x(double v, double v1) {
+                            return Math.cos(v) * Math.sin(v1);
+                        }
+
+                        @Override
+                        public double y(double v, double v1) {
+                            return Math.sin(v) * Math.cos(v1);
+                        }
+
+                        @Override
+                        public double z(double v, double v1) {
+                            return Math.cos(v);
+                        }
+                    },
+                    0,
+                    Math.PI * 2,
+                    0, Math.PI * 2, Math.PI/32 * 2, Math.PI/32 * 2
+            );*/
+
+        } else {
             return true;
         }
 

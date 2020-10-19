@@ -59,7 +59,7 @@ public class LobbyManager {
     private void SetInventory(Player player) {
         // TODO: MOVE LOBBY ITEMS TO JSON FILES (./itemdata/(itemname).json)
         ItemStack arenaSelector = CustomItem.Create(Material.IRON_SWORD, "§3§lArena Selector §r» §8(right click)", 1, true, "§7Opens the arena GUI");
-        ItemStack kitPreview = CustomItem.Create(Material.CHEST, "§6§lKit Preview §r» §8(right click)", 1, true, "§7Opens the kit preview GUI");
+        ItemStack kitPreview = CustomItem.Create(Material.CHEST, "§6§lClass Preview §r» §8(right click)", 1, true, "§7Opens the kit preview GUI");
         ItemStack languageSelector = CustomItem.CreateSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRmYzg5MzI4NjVmZDU3ZDlkMjM2NWYxYWUyZDQ3NTEzNWQ3NDZiMmFmMTVhYmQzM2ZmYzJhNmFiZDM2MjgyIn19fQ==");
         ItemStack quitGame = CustomItem.Create(Material.MAGMA_CREAM, "§c§lReturn to Hub §r» §8(right click)", 1, true, "§7Takes you back to the server hub");
 

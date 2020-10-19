@@ -11,7 +11,7 @@ plugins {
 
     // We need Spigradle and the Shadow Plugin
     // just to make life easier for everyone. 
-    id 'kr.entree.spigradle' version '2.2.2'
+    id 'kr.entree.spigradle' version '2.2.3'
     id 'com.github.johnrengelman.shadow' version '6.0.0'
 }
 
@@ -26,6 +26,8 @@ repositories {
     // Default Gradle repositories
     jcenter()
     mavenCentral()
+
+    papermc()
 
     // PaperMC repository
     maven {
@@ -46,7 +48,8 @@ repositories {
 }
 
 dependencies {
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    compileOnly 'org.projectlombok:lombok:1.18.16'
 
     // These are no Minecraft plugins, so 
     // shadow them into the final jar!
@@ -55,8 +58,10 @@ dependencies {
 
     // Since this is a PaperMC plugin, there is
     // no need to shadow anything into the final jar
-    compile files('libs/spigot-1.16.2.jar')
+    compileOnly paper('1.16.2')
     compileOnly 'me.clip:placeholderapi:2.10.9'
+
+
 }
 
 // vv Configuring the Gradle plugins below vv
@@ -72,5 +77,5 @@ shadowJar {
 
 spigot {
     description 'A KitPvP Plugin'
-    apiVersion '1.16'
+    apiVersion '1.13'
 }

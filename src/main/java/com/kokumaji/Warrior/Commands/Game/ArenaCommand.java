@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.kokumaji.Warrior.Game.Managers.LobbyManager;
 import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Game.Managers.ArenaManager;
@@ -13,7 +14,6 @@ import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
 import com.kokumaji.Warrior.Game.Objects.GUIs.ArenaGUI;
 import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
-import com.kokumaji.Warrior.Utils.MessageUtil;
 
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.entity.Player;
@@ -62,6 +62,11 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
             if (args.length < 2)
                 return true;
 
+            if(u.getArena() != null) {
+                u.sendMessage(translator.Translate("arena-messages.already-joined", true));
+                return true;
+            }
+
             Arena a = ArenaManager.GetArena(args[1]);
 
             if (a == null)
@@ -78,6 +83,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                        s = Sound.valueOf(c.getString("arena-settings.play-teleport-sound").toUpperCase());
                    
                    u.playSound(s);
+                   u.setArena(a);
                 }
             });
 
@@ -89,6 +95,38 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                 }
             }));
             
+        } else if(args[0].equalsIgnoreCase("leave")) {
+            LobbyManager lm = (LobbyManager) self.GetManager("lobby");
+
+            if(u.getArena() == null) {
+                u.sendMessage(translator.Translate("lobby-messages.already-in-lobby", true));
+                return true;
+            }
+
+            Bukkit.getScheduler().runTask(self, new Runnable() {
+                @Override
+                public void run() {
+
+                    Sound s = null;
+
+                    if(!c.getString("arena-settings.play-teleport-sound").toLowerCase().equals("none"))
+                        s = Sound.valueOf(c.getString("arena-settings.play-teleport-sound").toUpperCase());
+
+                    lm.TeleportPlayer(u);
+                    u.playSound(s);
+                }
+            });
+
+            u.sendMessage(translator.Translate(u.bukkit(), "arena-messages.arena-leave", true, new HashMap<>(){
+                private static final long serialVersionUID = 1L;
+
+                {
+                    put("Arena", u.getArena().GetName());
+                }
+            }));
+
+            u.setArena(null);
+
         } else if (args[0].equalsIgnoreCase("create")) {
             if (args.length < 2) 
                 return true;
@@ -106,7 +144,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                 return true;
             }
 
-            Arena aNew = new Arena(args[1], 0, u.bukkit().getLocation(), 16);
+            Arena aNew = new Arena(args[1], ArenaManager.GetArenas().size(), u.bukkit().getLocation(), 16);
             ArenaManager.RegisterArena(aNew);
             aNew.Save();
 

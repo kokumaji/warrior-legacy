@@ -9,15 +9,16 @@ import com.kokumaji.Warrior.Warrior;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.minecraft.server.v1_16_R2.WorldGenFeatureDefinedStructureJigsawPlacement.a;
-
 public class Arena {
+
+    // TODO: spawn area + full arena bounds
 
     private String name;
     private Region region;
     private int id;
     private Location spawn;
     private int maxPlayers;
+
     private int currentPlayers;
 
     private ArrayList<GameFlag> gameflags = new ArrayList<GameFlag>();
@@ -116,13 +117,17 @@ public class Arena {
         user.inLobby(false);
     }
 
+    public int GetMaxPlayers() {
+        return maxPlayers;
+    }
+
     public ArrayList<GameFlag> GetGameFlags() {
         return gameflags;
     }
 
     public GameFlag GetGameFlag(GameFlag pType) {
         for (GameFlag gf : gameflags) {
-            if(gf == pType) return gf;
+            if (gf == pType) return gf;
         }
 
         return null;

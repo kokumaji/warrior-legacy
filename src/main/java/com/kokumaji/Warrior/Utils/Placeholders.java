@@ -1,8 +1,11 @@
 package com.kokumaji.Warrior.Utils;
 
+import com.kokumaji.Warrior.Game.Managers.ArenaManager;
 import com.kokumaji.Warrior.Game.Managers.UserManager;
+import com.kokumaji.Warrior.Game.Objects.Arena;
 import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import me.kokumaji.HibiscusAPI.api.translation.ReplaceExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 public class Placeholders extends ReplaceExpansion {
 
@@ -19,6 +22,10 @@ public class Placeholders extends ReplaceExpansion {
 
         WarriorUser u = UserManager.GetPlayer(offlinePlayer.getUniqueId());
         switch (arguments[0]) {
+            case "online":
+                return String.valueOf(Bukkit.getOnlinePlayers().size());
+            case "maxplayers":
+                return String.valueOf(Bukkit.getServer().getMaxPlayers());
             case "player":
                 output = offlinePlayer.getName();
                 break;
@@ -33,6 +40,33 @@ public class Placeholders extends ReplaceExpansion {
                 break;
             case "ping":
                 output = colorizedPing(u.getPing());
+                break;
+            case "arena":
+                if(arguments.length > 1) {
+                    Arena a = null;
+                    if(MessageUtil.isInteger(arguments[1])) {
+                        a = ArenaManager.GetArena(Integer.parseInt(arguments[1]));
+                    } else {
+                        a = ArenaManager.GetArena(arguments[1]);
+                    }
+
+                    if(a == null) return null;
+
+                    if(arguments.length == 3) {
+                        switch(arguments[2]) {
+                            case "spawn":
+                                return MessageUtil.readableLocation(a.GetSpawn(), true, false);
+                            case "name":
+                                return a.GetName();
+                            case "id":
+                                return String.valueOf(a.GetId());
+                            case "maxplayers":
+                                return String.valueOf(a.GetMaxPlayers());
+                        }
+                    }
+
+                    return a.GetName();
+                }
                 break;
         }
 

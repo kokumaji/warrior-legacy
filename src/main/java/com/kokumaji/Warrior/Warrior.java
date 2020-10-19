@@ -15,18 +15,19 @@ import com.kokumaji.Warrior.Commands.Game.KitCommand;
 import com.kokumaji.Warrior.Commands.General.MainCommand;
 import com.kokumaji.Warrior.Game.Listeners.ChatListener;
 import com.kokumaji.Warrior.Game.Listeners.PlayerListener;
-import com.kokumaji.Warrior.Game.Managers.ArenaManager;
-import com.kokumaji.Warrior.Game.Managers.KitManager;
-import com.kokumaji.Warrior.Game.Managers.MOTDManager;
+import com.kokumaji.Warrior.Game.Managers.*;
 import com.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
-import com.kokumaji.Warrior.Game.Managers.LobbyManager;
+import com.kokumaji.Warrior.Game.Objects.UserStats;
+import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Utils.*;
 
+import me.kokumaji.HibiscusAPI.HibiscusAPI;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,8 +47,12 @@ public class Warrior extends JavaPlugin {
     private FileConfiguration c;
     private boolean usePlaceholderAPI;
 
+    HibiscusAPI apiProvider;
+
     @Override
     public void onEnable() {
+
+        apiProvider = new HibiscusAPI(this);
 
         ConfigUtil.CopyConfig(false);
         c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
@@ -102,6 +107,15 @@ public class Warrior extends JavaPlugin {
             InternalMessages.STORAGE_TYPE_NOT_IMPLEMENTED.Log(dataType);
         } else {
             InternalMessages.STORAGE_TYPE_INVALID.Log(dataType);
+        }
+
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            DatabaseUtil dbUtil = (DatabaseUtil)GetUtil("sql");
+            dbUtil.Execute("INSERT IGNORE INTO $table_player_stats VALUES ('" + p.getUniqueId() + "', 0, 0, 0, 'en_US')");
+
+            UserStats stats = dbUtil.GetUserData(p.getUniqueId());
+            WarriorUser user = new WarriorUser(p, stats);
+            UserManager.AddPlayer(user);
         }
 
     }

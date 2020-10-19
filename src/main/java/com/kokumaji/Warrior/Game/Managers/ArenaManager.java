@@ -17,7 +17,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ArenaManager {
 
-    // TODO: MOVE ARENA STORAGE TO JSON FILES (./data/arenas.json)
+    //!!! TODO: MOVE ARENA STORAGE TO JSON FILES (./data/arenas.json)
+    // TODO: ARENA JOIN logic: add user to hashmap in arena object (non-static!)
+    // TODO: when arena joined, send arena lobby items
 
     private static Warrior self = (Warrior) Warrior.GetPlugin();
     private static Map<Integer, Arena> arenaMap = new HashMap<Integer, Arena>();
@@ -55,7 +57,14 @@ public class ArenaManager {
         }
 		return null;
     }
-    
+
+    public static Arena GetArena(int pArena) {
+        for(Arena a : arenaMap.values()) {
+            if(a.GetId() == pArena) return a;
+        }
+        return null;
+    }
+
     public static Map<Integer, Arena> GetArenas() {
         return arenaMap;
     }

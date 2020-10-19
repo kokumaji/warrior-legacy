@@ -26,7 +26,11 @@ chat-settings:
 
   announce-quit: true
 
+  handle-first-join: true
+
   send-motd: true
+
+  chat-format: "%luckperms_prefix% %player% §7» "
 
 lobby-settings:
 

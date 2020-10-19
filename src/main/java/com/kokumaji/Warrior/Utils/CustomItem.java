@@ -5,14 +5,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -94,18 +89,19 @@ public class CustomItem implements Listener {
             return head;
 
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        //GameProfile profile = new GameProfile(UUID.randomUUID(), null);
 
-        profile.getProperties().put("textures", new Property("textures", url));
+        //profile.getProperties().put("textures", new Property("textures", url));
 
-        try {
+        /* try {
             Field profileField = headMeta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);
             profileField.set(headMeta, profile);
 
         } catch (IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException error) {
             error.printStackTrace();
-        }
+        }*/
+
         head.setItemMeta(headMeta);
         return head;
     }

@@ -11,7 +11,9 @@ public class GUIHandler {
     private static Map<String, GUI> guiMap = new HashMap<String, GUI>(); 
 
     public static void RegisterGUIs() {
+
         guiMap.put("arena", new ArenaGUI(45, Warrior.GetPlugin()));
+        guiMap.put("class", new ClassGUI(36, Warrior.GetPlugin()));
     }
 
     public static GUI GetGUI(String name) {

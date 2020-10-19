@@ -8,15 +8,18 @@ import com.kokumaji.Warrior.Game.Objects.WarriorUser;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Utils.*;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.util.HashMap;
 
@@ -52,18 +55,23 @@ public class PlayerListener implements Listener {
                 user.playSound(sound);
             }
 
+            Translator t = Warrior.getTranslator();
+
+            if(c.getBoolean("chat-settings.handle-first-join")) {
+                Location loc = user.bukkit().getLocation();
+                Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+                FireworkMeta fwm = fw.getFireworkMeta();
+
+                fwm.setPower(1);
+                fwm.addEffect(FireworkEffect.builder().withColor(Color.AQUA).flicker(true).with(FireworkEffect.Type.BURST).build());
+                fw.setFireworkMeta(fwm);
+
+                e.setJoinMessage(t.Translate(p, "general-messages.first-join", true));
+                return;
+            }
+
             if(c.getBoolean("chat-settings.announce-join")) {
-                e.setJoinMessage(null);
-                Translator t = Warrior.getTranslator();
-                for(WarriorUser u : UserManager.GetPlayers()) {
-                    u.sendMessage(t.Translate(p, "general-messages.join-message", true, new HashMap<String, String>() {
-                        {
-                            put("Player", p.getName());
-                            put("Online", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-                            put("MaxPlayers", String.valueOf(Bukkit.getServer().getMaxPlayers()));
-                        }
-                    }));
-                }
+                e.setJoinMessage(t.Translate(p, "general-messages.join-message", true));
             }
 
             if(c.getBoolean("chat-settings.send-motd")) {
@@ -98,6 +106,20 @@ public class PlayerListener implements Listener {
                         }
                     }));
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemInteract(PlayerInteractEvent e) {
+        WarriorUser u = UserManager.GetPlayer(e.getPlayer().getUniqueId());
+        if(u.isInLobby()) {
+            ItemStack is = e.getItem();
+
+            if(is == null) return;
+
+            if(is.getType().equals(Material.IRON_SWORD)) {
+                Bukkit.dispatchCommand(u.bukkit(), "arena");
             }
         }
     }

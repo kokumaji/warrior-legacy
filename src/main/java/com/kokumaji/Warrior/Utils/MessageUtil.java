@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -115,18 +116,41 @@ public class MessageUtil {
         }
     }
 
-	public static void UnknownSubCommand(WarriorUser u) {
-        CenterMessage(u.bukkit(), " ", HL, " ", "&7Unknown sub-command.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
-        u.bukkit().playSound(u.bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
-	}
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
 
-	public static void UnknownArgument(WarriorUser u, String string) {
-        CenterMessage(u.bukkit(), " ", HL, " ", "&b" + string + " &7is not a valid argument.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
-        u.bukkit().playSound(u.bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
-	}
+    public static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
+    }
 
-	public static void MissingArguments(WarriorUser u) {
-        CenterMessage(u.bukkit(), " ", HL, " ", "&7Missing Arguments.", "&7Type &b/kitpvp commands &7for help.", " ", HL, " ");
-        u.bukkit().playSound(u.bukkit().getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1f, 1.5f);
-	}
+    public static String readableLocation(Location location, boolean showVar, boolean showWorld) {
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        String output;
+
+        if(showVar) {
+            output = String.format("X%d Y%2d Z%3d", x, y, z);
+        } else {
+            output = String.format("%d %2d %3d", x, y, z);
+        }
+
+        if(showWorld) {
+            output = String.format(output + ", World %s", location.getWorld().getName());
+        }
+
+        return output;
+
+    }
+
 }

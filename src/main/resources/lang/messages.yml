@@ -1,6 +1,7 @@
 general-messages:
-  join-message: "&b{Player} &7joined the server! (&b{Online}&7/&b{MaxPlayers}&7)"
-  quit-message: "&b{Player} &7left the server! (&b{Online}&7/&b{MaxPlayers}&7)"
+  join-message: "&b{warrior:player} &7joined the server! (&b{warrior:online}&7/&b{warrior:maxplayers}&7)"
+  quit-message: "&b{warrior:player} &7left the server! (&b{warrior:online}&7/&b{warrior:maxplayers}&7)"
+  first-join: "&b{warrior:player} &7joined for the first time! (&b{warrior:online}&7/&b{warrior:maxplayers}&7)"
 command:
   reload-message: "&bSuccessfully reloaded &7the plugin config!"
   motd-reload-message: "&bSuccessfully reloaded &7the motd file!"
@@ -9,3 +10,7 @@ arena-messages:
   arena-creation: "&7Successfully created arena &b{Arena}"
   arena-already-exists: "&7Arena &b{Arena} &7already exists."
   arena-teleport: "&7Teleporting to arena &b{Arena}"
+  arena-leave: "&7Left arena &b{Arena}"
+  already-joined: "&7You already joined an arena!"
+lobby-messages:
+  already-in-lobby: "&7You're already in the lobby!"

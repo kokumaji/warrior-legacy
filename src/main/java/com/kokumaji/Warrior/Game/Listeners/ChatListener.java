@@ -2,9 +2,9 @@ package com.kokumaji.Warrior.Game.Listeners;
 
 import com.kokumaji.Warrior.Utils.MessageUtil;
 import com.kokumaji.Warrior.Warrior;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.kokumaji.HibiscusAPI.api.translation.ChatMessage;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,20 +29,20 @@ public class ChatListener implements Listener {
 
 
             Translator t = Warrior.getTranslator();
+            String chatFormat = c.getString("chat-settings.chat-format");
 
             long startTime = System.nanoTime();
             ChatMessage msg = new ChatMessage(t.parsePlaceholder(e.getPlayer(), MessageUtil.ApplyColor(content)))
                     .applyURLs(true);
+            ChatMessage chat = new ChatMessage(PlaceholderAPI.setPlaceholders(p, chatFormat)).appendMessage(msg);
             long endTime = System.nanoTime();
-            double execTime = (double)(endTime - startTime) / 1000000;
-            System.out.println("§eWARRIOR | DEBUG §7» Chat message builder took §6" + execTime + "ms §7to complete. §r(player=Player, content=$msg)");
-
-            ChatMessage chat = new ChatMessage(p.getName() + " » ").appendMessage(msg);
+            double execTime = Translator.round((double)(endTime - startTime) / 1000000, 2);
 
             for(Player pl : Bukkit.getOnlinePlayers()) {
                 pl.spigot().sendMessage(chat.getComponent());
             }
-            
+
+            System.out.println("§eWARRIOR | DEBUG §7» Chat message builder took §6" + execTime + "ms §7to complete.");
             System.out.println(chat.getRawContent());
         }
 

@@ -3,21 +3,13 @@ package com.kokumaji.Warrior.Game.Objects;
 import com.kokumaji.Warrior.Warrior;
 import com.kokumaji.Warrior.Utils.ConfigUtil;
 import com.kokumaji.Warrior.Utils.DatabaseUtil;
-import com.kokumaji.Warrior.Utils.InternalMessages;
 import com.kokumaji.Warrior.Utils.LanguageCode;
-import com.kokumaji.Warrior.Utils.ConfigUtil.ConfigType;
 
 import me.kokumaji.HibiscusAPI.api.objects.User;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.UUID;
 
 public class WarriorUser extends User {
 
@@ -136,4 +128,5 @@ public class WarriorUser extends User {
     public UserStats getStats() {
         return new UserStats(getUUID(), kills, deaths, coins, lang);
     }
+
 }

@@ -13,9 +13,11 @@
 - player gets to select a class,
   which provides base bonuses
   (e.g. archer -> mining fatigue but
-  slighty faster walk speed)
+  slightly faster walk speed)
+- if no class is selected, player can't
+  join any arenas, maybe implement tutorial?
 
-## KIT LOGIC ##
+## CLASS LOGIC ##
 - disable armor damage (configurable)
 - legacy vs custom soup:
   custom mode: configurable heal item, stacked
@@ -25,11 +27,13 @@
   with sign or killstreak (configurable)
 - display arrows & stew left as action message (nms)
 - special abilities per kit. 
-- implement kit shop (free version kit/command only)
+- implement class shop (free version kit/command only)
   premium version will include physical per player
   kit shop with armor stands and kit preview mode.
   (each kit can be played twice in real arena OR 
   in a custom PvE playground)
+- Classes can be upgraded using COINS or, optionally,
+  any VAULT API compatible currency from 3rd party plugins.
 
 ## SKILLS LOGIC ##
 - Skills are recharged per killstreak reached,
@@ -82,5 +86,5 @@
 
 ## MORE STUFF ##
 - sort/re-evaluate shit pls
--  leveling system, (maybe) crates and seasonal rewards
+- leveling system, (maybe) crates and seasonal rewards
 
