@@ -165,10 +165,9 @@ data-storage:
     table-prefix: "Warrior_"
 
 use-modules:
-  # always uses placeholderapi for now
-  # will allow native in the future
-  # Allowed: papi, native or both (default = both)
-  placeholder-manager: both
+
+  #whether Warrior should use PlaceholderAPI
+  placeholderapi-support: true
 
   # use built in chat manager
   use-chat-manager: true

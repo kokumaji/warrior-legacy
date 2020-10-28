@@ -16,9 +16,9 @@ plugins {
 }
 
 // Setting some variables for our plugin!
-group 'com.kokumaji'
+group 'me.kokumaji'
 version '1.0-DEV'
-mainClassName = 'com.kokumaji.Warrior.Warrior'
+mainClassName = 'me.kokumaji.Warrior.Warrior'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -28,11 +28,6 @@ repositories {
     mavenCentral()
 
     papermc()
-
-    // PaperMC repository
-    maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
-    }
 
     // PlaceholderAPI repository
     maven {
@@ -53,21 +48,18 @@ dependencies {
 
     // These are no Minecraft plugins, so 
     // shadow them into the final jar!
-    shadow "com.zaxxer:HikariCP:3.4.2"
     shadow files('libs/HibiscusAPI.jar')
 
     // Since this is a PaperMC plugin, there is
     // no need to shadow anything into the final jar
-    compileOnly paper('1.16.2')
+    compileOnly paper()
     compileOnly 'me.clip:placeholderapi:2.10.9'
-
-
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.3'
 }
 
 // vv Configuring the Gradle plugins below vv
 
 shadowJar {
-
     archiveClassifier.set('')
     project.configurations.implementation.canBeResolved = true
     configurations = [project.configurations.shadow]
@@ -79,3 +71,4 @@ spigot {
     description 'A KitPvP Plugin'
     apiVersion '1.13'
 }
+
