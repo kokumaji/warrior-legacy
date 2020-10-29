@@ -87,7 +87,7 @@ public class ConfigUtil {
         prefix = MessageUtil.ApplyColor(fc.getString("general-settings.plugin-prefix"));
 
         if(copied)
-            Warrior.getAPI().getLogger().info(InternalMessages.CONFIG_COPIED);
+            Warrior.getApiProvider().getLogger().info(InternalMessages.CONFIG_COPIED);
 
     }
 

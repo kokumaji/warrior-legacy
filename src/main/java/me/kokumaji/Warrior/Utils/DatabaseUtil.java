@@ -11,7 +11,6 @@ import java.util.UUID;
 
 public class DatabaseUtil extends DatabaseConnection {
 
-
     public DatabaseUtil(FileConfiguration fc, ConnectionDetails details) {
         super(fc, details);
     }

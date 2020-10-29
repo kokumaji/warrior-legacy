@@ -1,62 +1,50 @@
-package me.kokumaji.Warrior.Utils;
+package me.kokumaji.Warrior.Game.Objects;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.Getter;
-import me.kokumaji.Warrior.Warrior;
+import me.kokumaji.HibiscusAPI.HibiscusAPI;
 import me.kokumaji.HibiscusAPI.api.nms.BukkitHandler;
+import me.kokumaji.HibiscusAPI.api.storage.cache.Cacheable;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
+import me.kokumaji.HibiscusAPI.api.util.MathUtil;
+import me.kokumaji.Warrior.Warrior;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
-public class Hologram {
+public class Hologram implements Cacheable {
 
     private transient Location location;
 
     // JSON DATA
     @Getter
-    private UUID uuid;
+    private final UUID uuid;
 
-    private String[] lines;
+    @Getter
+    private final String name;
+
+    private final String[] lines;
 
     private String world;
     private double locX;
     private double locY;
     private double locZ;
 
-    public Hologram(Location loc, String... text) {
+    public Hologram(String name, UUID uuid, Location loc, String... text) {
+        if(name == null) this.name = MathUtil.generateId();
+        else this.name = name;
+
         this.location = loc.add(0, text.length * 0.25, 0);
         this.lines = text;
 
-        this.uuid = UUID.randomUUID();
+        if(uuid == null) this.uuid = UUID.randomUUID();
+        else this.uuid = uuid;
 
         this.world = loc.getWorld().getName();
         this.locX = loc.getX();
         this.locY = loc.getY();
         this.locZ = loc.getZ();
-    }
-
-    public void save() {
-        File f = new File(Warrior.getPlugin().getDataFolder() + "/data/holograms/" + uuid.toString() + ".json");
-        f.getParentFile().mkdirs();
-
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
-
-        try(FileWriter writer = new FileWriter(new File(Warrior.getPlugin().getDataFolder() + "/data/holograms/" + uuid.toString() + ".json"))) {
-            gson.toJson(this, writer);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void spawn(Player... players) {
@@ -102,5 +90,10 @@ public class Hologram {
 
         }
 
+    }
+
+    @Override
+    public UUID getKey() {
+        return uuid;
     }
 }

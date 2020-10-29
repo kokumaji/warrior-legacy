@@ -20,6 +20,7 @@ import me.kokumaji.Warrior.Commands.General.MainCommand;
 import me.kokumaji.Warrior.Game.Listeners.ChatListener;
 import me.kokumaji.Warrior.Game.Listeners.PlayerListener;
 import me.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
+import me.kokumaji.Warrior.Game.Objects.Hologram;
 import me.kokumaji.Warrior.Game.Objects.UserStats;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 
@@ -29,10 +30,8 @@ import me.kokumaji.HibiscusAPI.HibiscusLogger;
 import me.kokumaji.HibiscusAPI.api.storage.DatabaseConnection;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import me.kokumaji.Warrior.Game.Managers.*;
-import me.kokumaji.Warrior.Utils.ConfigUtil;
-import me.kokumaji.Warrior.Utils.DatabaseUtil;
-import me.kokumaji.Warrior.Utils.InternalMessages;
-import me.kokumaji.Warrior.Utils.Placeholders;
+import me.kokumaji.Warrior.Game.Storage.HologramCache;
+import me.kokumaji.Warrior.Utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -47,6 +46,7 @@ public class Warrior extends JavaPlugin {
     private static List<Command> cmds = new ArrayList<Command>();
     private CommandMap cMap;
 
+    @Getter
     static Translator translator;
     DatabaseUtil sqlUtil;
     LobbyManager lobbyManager;
@@ -60,7 +60,10 @@ public class Warrior extends JavaPlugin {
     @Getter
     public static Cache<WarriorUser> userCache = new Cache<>();
 
-    static HibiscusAPI apiProvider;
+    @Getter
+    public static HologramCache<Hologram> hologramCache;
+
+    @Getter static HibiscusAPI apiProvider;
 
     @Override
     public void onEnable() {
@@ -71,6 +74,8 @@ public class Warrior extends JavaPlugin {
         apiProvider = new HibiscusAPI(this);
         apiProvider.debugMode = c.getBoolean("general-settings.debug");
         pluginLogger = apiProvider.getLogger();
+
+        hologramCache = new HologramCache<>(this, Hologram.class);
 
         HibiscusDebugger debugger = null;
         if(apiProvider.debugMode) {
@@ -190,6 +195,7 @@ public class Warrior extends JavaPlugin {
     public void onDisable() {
         userCache.clear();
         sqlUtil.close();
+        hologramCache.saveToDisk();
     }
 
     protected void getCommandMap() {
@@ -203,10 +209,6 @@ public class Warrior extends JavaPlugin {
         }
     }
 
-    public static Translator getTranslator() {
-        return translator;
-    }
-
     public Object getUtil(String s) {
         if(s.contains("sql")) return sqlUtil;
         return null;
@@ -218,15 +220,12 @@ public class Warrior extends JavaPlugin {
         return null;
     }
 
-    public static Plugin getPlugin() {
-        return getPlugin(Warrior.class);
-    }
-
     public boolean usePAPI() {
         return usePlaceholderAPI;
     }
 
-    public static HibiscusAPI getAPI() {
-        return apiProvider;
+    public static Plugin getPlugin() {
+        return getPlugin(Warrior.class);
     }
+
 }

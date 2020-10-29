@@ -3,24 +3,16 @@ package me.kokumaji.Warrior.Commands.General;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-import me.kokumaji.HibiscusAPI.api.util.PlayerSelector;
-import me.kokumaji.HibiscusAPI.api.util.TimeUtil;
 import me.kokumaji.Warrior.Game.Objects.GUIs.ClassGUI;
 import me.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
-import me.kokumaji.Warrior.Game.Objects.UserStats;
+import me.kokumaji.Warrior.Game.Objects.Hologram;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
-import me.kokumaji.Warrior.Utils.DatabaseUtil;
-import me.kokumaji.Warrior.Utils.Hologram;
 import me.kokumaji.Warrior.Utils.MessageUtil;
 import me.kokumaji.Warrior.Warrior;
 import me.kokumaji.Warrior.Game.Managers.MOTDManager;
 
-import me.kokumaji.HibiscusAPI.api.objects.CustomItem;
-import me.kokumaji.HibiscusAPI.api.particle.ParticleSystem;
-import me.kokumaji.HibiscusAPI.api.particle.shape.Circle;
 import me.kokumaji.HibiscusAPI.api.translation.ChatMessage;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 
@@ -30,18 +22,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
-import org.bukkit.util.Vector;
-
-import static me.kokumaji.HibiscusAPI.api.util.PlayerSelector.IN_SURVIVAL;
-import static me.kokumaji.HibiscusAPI.api.util.PlayerSelector.NOT_SPECTATING;
 
 public class MainCommand extends AsyncCommand implements TabCompleter {
 
@@ -112,12 +96,14 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                 }
             });
         } else if(args[0].equalsIgnoreCase("debug")) {
-            DatabaseUtil databaseUtil = (DatabaseUtil)self.getUtil("sql");
-            UserStats stats = databaseUtil.getUserData(args[1]);;
 
-            user.sendMessage("Last Login for " + stats.PLAYER_UUID + ": " + TimeUtil.duration(stats.LAST_LOGIN));
+            Hologram hg = new Hologram("Test", null, user.bukkit().getLocation(), "Line One!", "Line Two!");
+            hg.spawn(user.bukkit());
 
-            /*ChatMessage msg = new ChatMessage("&3&lClick me for a suprise!")
+            Warrior.getHologramCache().add(hg);
+            Warrior.getHologramCache().saveToDisk();
+
+            /* ChatMessage msg = new ChatMessage("&3&lClick me for a suprise!")
                     .setClickAction(self, user.bukkit(), 20, player1 -> {
                         Location loc = user.bukkit().getLocation();
                         ArrayList<Entity> removeLater = new ArrayList<>();
@@ -127,15 +113,14 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
 
                         Bukkit.getScheduler().runTask(self, () -> {
                             ParticleSystem ps = new ParticleSystem(self, loc);
-                            Random r = new Random();
 
                             for(int i = 0; i < 8; i++) {
-                                ItemStack item = new CustomItem(itemSet[r.nextInt(itemSet.length)], 1).build();
+                                ItemStack item = new CustomItem(itemSet[MathUtil.rInt(itemSet.length)], 1).build();
                                 ItemMeta itemMeta = item.getItemMeta();
 
-                                double randomX = 0.100 + (-0.100 - 0.100) * r.nextDouble();
-                                double randomY = 0.30 + (0.50 - 0.30) * r.nextDouble();
-                                double randomZ = 0.100 + (-0.100 - 0.100) * r.nextDouble();
+                                double randomX = MathUtil.rDouble(-0.10, 0.10);
+                                double randomY = MathUtil.rDouble(0.30, 0.50);
+                                double randomZ = MathUtil.rDouble(-0.10, 0.10);
 
                                 itemMeta.setDisplayName(ConfigUtil.GenerateID(8));
                                 item.setItemMeta(itemMeta);
@@ -158,17 +143,6 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                     });
 
             user.sendMessage(msg);*/
-
-        } else if(args[0].equalsIgnoreCase("hologram")) {
-            Hologram hg = new Hologram(user.bukkit().getLocation(), "Test Line 1", "Test Line 2");
-            hg.save();
-
-            Bukkit.getScheduler().runTask(self, () -> hg.spawn(user.bukkit()));
-
-        } else if(args[0].equalsIgnoreCase("effect")) {
-            ParticleSystem ps = new ParticleSystem(self, user.bukkit().getLocation());
-            ps.setParticle(Particle.LAVA);
-            ps.shape(new Circle(0, 0, 0, 3), ps.getParticle());
 
         } else {
             return true;

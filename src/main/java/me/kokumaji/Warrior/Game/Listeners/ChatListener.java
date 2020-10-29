@@ -33,7 +33,7 @@ public class ChatListener implements Listener {
             String chatFormat = c.getString("chat-settings.chat-format");
 
             HibiscusDebugger debugger = null;
-            if(Warrior.getAPI().debugMode)
+            if(Warrior.getApiProvider().debugMode)
                 debugger = new HibiscusDebugger("ChatMessage#<init>()");
 
             ChatMessage msg = new ChatMessage(t.parsePlaceholder(e.getPlayer(), MessageUtil.ApplyColor(content)))

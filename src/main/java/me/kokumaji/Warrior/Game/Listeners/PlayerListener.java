@@ -3,6 +3,7 @@ package me.kokumaji.Warrior.Game.Listeners;
 import me.kokumaji.HibiscusAPI.api.util.TimeUtil;
 import me.kokumaji.Warrior.Game.Managers.LobbyManager;
 import me.kokumaji.Warrior.Game.Managers.MOTDManager;
+import me.kokumaji.Warrior.Game.Objects.Hologram;
 import me.kokumaji.Warrior.Game.Objects.UserStats;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 import me.kokumaji.Warrior.Utils.DatabaseUtil;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 
 public class PlayerListener implements Listener {
 
-    private Warrior self = (Warrior) Warrior.getPlugin();
+    private Warrior self = Warrior.getPlugin(Warrior.class);
 
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
@@ -60,6 +61,10 @@ public class PlayerListener implements Listener {
             }
 
             Translator t = Warrior.getTranslator();
+
+            for(Hologram h : Warrior.getHologramCache().getValues()) {
+                h.spawn(p);
+            }
 
             if(c.getBoolean("chat-settings.handle-first-join")) {
                 Location loc = user.bukkit().getLocation();
