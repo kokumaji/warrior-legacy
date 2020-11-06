@@ -1,5 +1,6 @@
 package me.kokumaji.Warrior.Utils;
 
+import me.kokumaji.HibiscusAPI.api.util.MathUtil;
 import me.kokumaji.Warrior.Warrior;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -108,14 +109,14 @@ public class ProgressBar {
                     }
                 }
 
-                double percent = (((double)i/(double)bars)*100);
+                String percent = MathUtil.percentageAsString(i, bars, 0);
 
                 double pitch = 0.5 * Math.pow(maxPitch * 2, (double)i / (double)bars);
 
                 if(sound != null)
                     finalLoc.getWorld().playSound(finalLoc, sound, 1f, (float)pitch);
 
-                String bar = progress + bgColor + empty.substring(i) + " §f" + (int) percent + "%";
+                String bar = progress + bgColor + empty.substring(i) + " §f" + percent;
                 armorStand.setCustomName(bar);
 
                 progress = progress + style.get();

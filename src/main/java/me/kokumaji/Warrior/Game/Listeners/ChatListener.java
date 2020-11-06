@@ -34,7 +34,7 @@ public class ChatListener implements Listener {
 
             HibiscusDebugger debugger = null;
             if(Warrior.getApiProvider().debugMode)
-                debugger = new HibiscusDebugger("ChatMessage#<init>()");
+                debugger = new HibiscusDebugger();
 
             ChatMessage msg = new ChatMessage(t.parsePlaceholder(e.getPlayer(), MessageUtil.ApplyColor(content)))
                     .applyURLs(true);

@@ -66,8 +66,7 @@ public class Warrior extends JavaPlugin {
     @Getter static HibiscusAPI apiProvider;
 
     @Override
-    public void onEnable() {
-
+    public void onLoad() {
         ConfigUtil.CopyConfig(false);
         c = ConfigUtil.GetConfig(ConfigUtil.ConfigType.SETTINGS);
 
@@ -75,16 +74,24 @@ public class Warrior extends JavaPlugin {
         apiProvider.debugMode = c.getBoolean("general-settings.debug");
         pluginLogger = apiProvider.getLogger();
 
+        new SpectateManager(c);
+
+        if(!checkSupported())
+            sendWarnMessage();
+
+
+        if(getDescription().getVersion().endsWith("alpha"))
+            sendAlphaMessage();
+    }
+
+    @Override
+    public void onEnable() {
+
         hologramCache = new HologramCache<>(this, Hologram.class);
 
         HibiscusDebugger debugger = null;
-        if(apiProvider.debugMode) {
-            debugger = new HibiscusDebugger("Warrior#<init>()");
-        }
-
-        if(!checkSupported()) {
-            sendWarnMessage();
-        }
+        if(apiProvider.debugMode)
+            debugger = new HibiscusDebugger();
 
         if(c.getBoolean("use-modules.placeholderapi-support")) {
             if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -117,12 +124,12 @@ public class Warrior extends JavaPlugin {
         KitManager.RegisterKits();
 
         File npcFolder = new File(getDataFolder(), "npcdata");
+
         if(!npcFolder.exists())
             npcFolder.mkdirs();
 
-        if(c.getBoolean("chat-settings.send-motd")) {
+        if(c.getBoolean("chat-settings.send-motd"))
             motdManager = new MOTDManager(c, this);
-        }
 
         GUIHandler.RegisterGUIs();
 
@@ -157,10 +164,23 @@ public class Warrior extends JavaPlugin {
             userCache.add(user);
         }
 
-        if(debugger != null) {
+        if(debugger != null)
             debugger.end();
-        }
 
+    }
+
+    private final String[] alphaMessage = {
+            "===================== [ §3WARRIOR§r ] =====================",
+            "|      WARNING: THIS IS AN ALPHA BUILD OF WARRIOR     |",
+            "=======================================================", " ",
+            "Bugs are to be expected. Please report any ",
+            "critical bugs to the plugin author. Thank you!",
+    };
+
+    private void sendAlphaMessage() {
+        for(String s : alphaMessage) {
+            apiProvider.getLogger().warn(s);
+        }
     }
 
     private final String[] warnMessage = {
@@ -168,7 +188,7 @@ public class Warrior extends JavaPlugin {
         "|    WARNING: YOUR SERVER DOES NOT RUN A SUPPORTED    |",
         "|            JAVA AND/OR MINECRAFT VERSION            |",
         "=======================================================", " ",
-        "\033[0;1mJava 11\u001b[0m and \033[0;1mPaperMC 1.13-1.16.3\u001b[0m is recommended.",
+        "\033[0;1mJava 11\u001b[0m and \033[0;1mPaperMC 1.13-1.16.4\u001b[0m is recommended.",
         "Bug reports for earlier/newer versions of Minecraft or",
         "Java will be ignored.", " ",
     };
@@ -185,6 +205,7 @@ public class Warrior extends JavaPlugin {
         apiProvider.getLogger().warn(minecraftDetected);
         apiProvider.getLogger().warn("===================== [ §3WARRIOR§r ] =====================");
     }
+
 
     private boolean checkSupported() {
         if(apiProvider.getServerVersion().MINOR < 13) return false;

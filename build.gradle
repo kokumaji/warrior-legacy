@@ -17,7 +17,7 @@ plugins {
 
 // Setting some variables for our plugin!
 group 'me.kokumaji'
-version '1.0-DEV'
+version '0.1-alpha'
 mainClassName = 'me.kokumaji.Warrior.Warrior'
 compileJava.options.encoding = 'UTF-8'
 

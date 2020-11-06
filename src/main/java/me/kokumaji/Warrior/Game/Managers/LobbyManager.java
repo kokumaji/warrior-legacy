@@ -1,8 +1,8 @@
 package me.kokumaji.Warrior.Game.Managers;
 
+import me.kokumaji.HibiscusAPI.api.objects.GenericItem;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 import me.kokumaji.Warrior.Utils.ConfigUtil;
-import me.kokumaji.HibiscusAPI.api.objects.CustomItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,17 +49,18 @@ public class LobbyManager {
     }
 
     public void TeleportPlayer(WarriorUser user) {
-        user.teleport(GetSpawn());
-        SetInventory(user.bukkit());
+        if(GetSpawn() != null)
+            user.teleport(GetSpawn());
 
+        SetInventory(user.bukkit());
         user.inLobby(true);
     }
 
     private void SetInventory(Player player) {
         // TODO: MOVE LOBBY ITEMS TO JSON FILES (./itemdata/(itemname).json)
-        ItemStack arenaSelector = new CustomItem(Material.IRON_SWORD, 1, "§3§lArena Selector §r» §8(right click)")
+        ItemStack arenaSelector = new GenericItem(Material.IRON_SWORD, 1, "§3§lArena Selector §r» §8(right click)")
                 .hideFlags(true).setLore("§7Opens the arena GUI").build();
-        ItemStack kitPreview = new CustomItem(Material.CHEST, 1, "§6§lClass Preview §r» §8(right click)")
+        ItemStack kitPreview = new GenericItem(Material.CHEST, 1, "§6§lClass Preview §r» §8(right click)")
                 .hideFlags(true).setLore("§7Opens the kit preview GUI").build();
 
         for(PotionEffect effect : player.getActivePotionEffects()) {

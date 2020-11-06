@@ -4,6 +4,11 @@
 
 ## MOVE CHAT TO EXTERNAL MODULE ##
 
+## DATABASE RESTRUCTURE ##
+- PLAYER TABLES; global stats, per player settings
+  item unlock table, quest status table??
+- SERVER TABLES; quest data tables, settings table??
+
 ## GENERAL STUFF ##
 - implement PAPI support
 - sound effects & particles
@@ -22,15 +27,15 @@
 - legacy vs custom soup:
   custom mode: configurable heal item, stacked
   amount of heal items displayed in action bar,
-  refill after killstreak reached. 
+  refill after killstreak reached.
   legacy mode: fill inventory with soup, refill
   with sign or killstreak (configurable)
 - display arrows & stew left as action message (nms)
-- special abilities per kit. 
+- special abilities per kit.
 - implement class shop (free version kit/command only)
   premium version will include physical per player
   kit shop with armor stands and kit preview mode.
-  (each kit can be played twice in real arena OR 
+  (each kit can be played twice in real arena OR
   in a custom PvE playground)
 - Classes can be upgraded using COINS or, optionally,
   any VAULT API compatible currency from 3rd party plugins.
@@ -49,7 +54,7 @@
 - (premium) worldguard-like gameflags
 
 ## LOBBY LOGIC ##
-- arena signs 
+- arena signs
 - implement guis for lobby items
 
 ## KILLSTREAK LOGIC ##
@@ -57,7 +62,7 @@
   unlock killstreak rewards with coins, can be stats boost,
   xp/coin booster, mines etc.
 - (PREMIUM ONLY!!!) Player with highest killstreak (and +10 kills)
-  is champion, will be "marked for death", higher rewards. 
+  is champion, will be "marked for death", higher rewards.
 - announce kill streak every X kills
 - Use BarAPI for optional killstreak progress in bossbar??
 

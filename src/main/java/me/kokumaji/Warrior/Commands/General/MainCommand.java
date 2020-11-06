@@ -5,11 +5,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.kokumaji.HibiscusAPI.api.objects.GenericItem;
+import me.kokumaji.HibiscusAPI.api.particle.Orientation;
+import me.kokumaji.HibiscusAPI.api.particle.ParticleSystem;
+import me.kokumaji.HibiscusAPI.api.particle.shapes.Circle;
+import me.kokumaji.HibiscusAPI.api.util.MathUtil;
+import me.kokumaji.HibiscusAPI.api.util.MojangUtil;
 import me.kokumaji.Warrior.Game.Objects.GUIs.ClassGUI;
 import me.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
-import me.kokumaji.Warrior.Game.Objects.Hologram;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 import me.kokumaji.Warrior.Utils.MessageUtil;
+import me.kokumaji.Warrior.Utils.ProgressBar;
 import me.kokumaji.Warrior.Warrior;
 import me.kokumaji.Warrior.Game.Managers.MOTDManager;
 
@@ -18,14 +24,21 @@ import me.kokumaji.HibiscusAPI.api.translation.Translator;
 
 import me.kokumaji.Warrior.Utils.ConfigUtil;
 import org.bukkit.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
+import org.bukkit.util.Vector;
 
 public class MainCommand extends AsyncCommand implements TabCompleter {
 
@@ -96,14 +109,17 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                 }
             });
         } else if(args[0].equalsIgnoreCase("debug")) {
+            ParticleSystem ps = new ParticleSystem(self, user.bukkit().getLocation());
+            ps.shape(Particle.BLOCK_CRACK, new Circle(0, 0, 0, 1, Orientation.XZ), Material.REDSTONE_BLOCK.createBlockData());
 
-            Hologram hg = new Hologram("Test", null, user.bukkit().getLocation(), "Line One!", "Line Two!");
-            hg.spawn(user.bukkit());
+            ItemStack itemStack = new GenericItem(Material.PLAYER_HEAD, 1).build();
+            MojangUtil.applyURL("kokumaji", itemStack);
 
-            Warrior.getHologramCache().add(hg);
-            Warrior.getHologramCache().saveToDisk();
+            user.bukkit().getInventory().addItem(itemStack);
 
-            /* ChatMessage msg = new ChatMessage("&3&lClick me for a suprise!")
+            user.sendActionBar("Test Message");
+
+            /*ChatMessage msg = new ChatMessage("&3&lClick me for a suprise!")
                     .setClickAction(self, user.bukkit(), 20, player1 -> {
                         Location loc = user.bukkit().getLocation();
                         ArrayList<Entity> removeLater = new ArrayList<>();
@@ -115,7 +131,7 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                             ParticleSystem ps = new ParticleSystem(self, loc);
 
                             for(int i = 0; i < 8; i++) {
-                                ItemStack item = new CustomItem(itemSet[MathUtil.rInt(itemSet.length)], 1).build();
+                                ItemStack item = new GenericItem(itemSet[MathUtil.rInt(itemSet.length)], 1).build();
                                 ItemMeta itemMeta = item.getItemMeta();
 
                                 double randomX = MathUtil.rDouble(-0.10, 0.10);

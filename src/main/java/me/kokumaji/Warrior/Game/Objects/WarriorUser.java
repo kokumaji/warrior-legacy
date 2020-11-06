@@ -1,6 +1,7 @@
 package me.kokumaji.Warrior.Game.Objects;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.kokumaji.HibiscusAPI.api.storage.cache.Cacheable;
 import me.kokumaji.Warrior.Warrior;
 import me.kokumaji.Warrior.Utils.ConfigUtil;
@@ -8,7 +9,9 @@ import me.kokumaji.Warrior.Utils.DatabaseUtil;
 import me.kokumaji.Warrior.Utils.LanguageCode;
 
 import me.kokumaji.HibiscusAPI.api.objects.User;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,10 +23,15 @@ public class WarriorUser extends User implements Cacheable {
     private Arena arena;
     private boolean lobby;
 
+    @Getter
+    double coinMultiplier = 1.0;
+
     private int killstreak = 0;
     @Getter int kills;
     @Getter private int deaths;
     @Getter private int coins;
+    @Getter @Setter
+    boolean spectating;
 
     public WarriorUser(Player player, UserStats pStats) {
         super(player);
@@ -55,8 +63,8 @@ public class WarriorUser extends User implements Cacheable {
         this.coins = amount;
     }
 
-    public void addCoins(int amount) {
-        this.coins = coins + amount;
+    public void addCoins(int amount, boolean useMultiplier) {
+        this.coins = useMultiplier ? coins + (int)(amount * coinMultiplier) : coins + amount;
     }
 
     public void takeCoins(int amount) {
@@ -123,5 +131,21 @@ public class WarriorUser extends User implements Cacheable {
     @Override
     public UUID getKey() {
         return getUUID();
+    }
+
+    public void sendCountdown(int seconds) {
+        new BukkitRunnable() {
+            int i = seconds;
+            @Override
+            public void run() {
+                if(i > 0) {
+
+
+                    bukkit().sendTitle(String.valueOf(i), "", 2, 20, 2);
+                    i--;
+                } else cancel();
+
+            }
+        }.runTaskTimer(Warrior.getPlugin(), 0L, 20L);
     }
 }

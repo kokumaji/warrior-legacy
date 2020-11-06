@@ -1,12 +1,12 @@
 package me.kokumaji.Warrior.Game.Objects.GUIs;
 
+import me.kokumaji.HibiscusAPI.api.objects.GenericItem;
 import me.kokumaji.Warrior.Game.Managers.ArenaManager;
 import me.kokumaji.Warrior.Game.Objects.Arena;
 import me.kokumaji.Warrior.Game.Objects.GUI;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 
 import me.kokumaji.Warrior.Warrior;
-import me.kokumaji.HibiscusAPI.api.objects.CustomItem;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ public class ArenaGUI extends GUI {
     @Override
     public void BuildGUI(Player player) {
         this.MakeInventory("Arenas");
-        ItemStack placeholder = new CustomItem(Material.BLACK_STAINED_GLASS_PANE, 1, " ").build();
+        ItemStack placeholder = new GenericItem(Material.BLACK_STAINED_GLASS_PANE, 1, " ").build();
         for(int i = 0; i < 9; i++) {
             RegisterSlot(placeholder, i);
             RegisterSlot(placeholder, (getInventory().getSize() - 9) +  i);
@@ -39,7 +39,7 @@ public class ArenaGUI extends GUI {
         int j = 9;
         for(Arena a : ArenaManager.GetArenas().values()) {
             if(j > 36) break;
-            ItemStack arenaItem = new CustomItem(Material.FILLED_MAP, 1, "§3§l§o" + a.GetName())
+            ItemStack arenaItem = new GenericItem(Material.FILLED_MAP, 1, "§3§l§o" + a.GetName())
                     .setLore("§7Teleport to Arena §b" + a.GetName()).build();
 
             RegisterSlot(arenaItem, j);

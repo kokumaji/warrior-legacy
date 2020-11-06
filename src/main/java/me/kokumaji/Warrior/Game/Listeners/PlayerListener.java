@@ -1,8 +1,12 @@
 package me.kokumaji.Warrior.Game.Listeners;
 
+import me.kokumaji.HibiscusAPI.api.particle.ParticleSystem;
+import me.kokumaji.HibiscusAPI.api.util.ServerPlatform;
 import me.kokumaji.HibiscusAPI.api.util.TimeUtil;
 import me.kokumaji.Warrior.Game.Managers.LobbyManager;
 import me.kokumaji.Warrior.Game.Managers.MOTDManager;
+import me.kokumaji.Warrior.Game.Managers.SpectateManager;
+import me.kokumaji.Warrior.Game.Managers.SpectateReason;
 import me.kokumaji.Warrior.Game.Objects.Hologram;
 import me.kokumaji.Warrior.Game.Objects.UserStats;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
@@ -17,7 +21,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -135,5 +142,36 @@ public class PlayerListener implements Listener {
                 Bukkit.dispatchCommand(u.bukkit(), "arena");
             }
         }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if(!(e.getEntity() instanceof Player)) return;
+
+        Player p = (Player)e.getEntity();
+        ParticleSystem ps = new ParticleSystem(self, p.getLocation());
+
+        ps.spawn(Particle.BLOCK_CRACK, 0.2, p.getEyeHeight(), 0.2, 10, Material.REDSTONE_BLOCK.createBlockData());
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onDeath(PlayerDeathEvent e) {
+        if(!(Warrior.getApiProvider().getPlatform().equals(ServerPlatform.Type.PAPERMC))) return;
+        if(e.isCancelled()) return;
+
+        WarriorUser user = Warrior.getUserCache().get(e.getEntity().getUniqueId());
+
+        if(user == null)
+            return;
+
+        if(user.isSpectating())
+            return;
+
+        e.setCancelled(true);
+
+        if(!SpectateManager.addPlayer(user, SpectateReason.DEATH))
+            Warrior.getPluginLogger().warn("Could not put Player " + user.getUsername() + " in spectator mode.");
+
     }
 }
