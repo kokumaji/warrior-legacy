@@ -4,15 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import me.kokumaji.HibiscusAPI.api.objects.GenericItem;
 import me.kokumaji.Warrior.Warrior;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
 public class Arena {
 
@@ -120,24 +115,6 @@ public class Arena {
     public void Teleport(WarriorUser user) {
         user.teleport(spawn);
         user.inLobby(false);
-
-        setInventory(user.bukkit());
-    }
-
-    private void setInventory(Player player) {
-        ItemStack classItem = new GenericItem(Material.LEATHER_CHESTPLATE, 1, "§3§lSelect Class §r» §8(right click)")
-                .hideFlags(true).setLore("§7Select a class.").build();
-        ItemStack quitItem = new GenericItem(Material.LEATHER_CHESTPLATE, 1, "§3§lBack to Lobby §r» §8(right click)")
-                .hideFlags(true).setLore("§7Return to the game lobby.").build();
-
-        for(PotionEffect effect : player.getActivePotionEffects()) {
-            player.removePotionEffect(effect.getType());
-        }
-
-        player.getInventory().clear();
-        player.getInventory().setItem(1, classItem);
-        player.getInventory().setItem(7, quitItem);
-
     }
 
     public int GetMaxPlayers() {

@@ -1,0 +1,3 @@
+{CENTER}&3&lThis is an example MOTD!
+{CENTER}&bYou can change this message by editing
+{CENTER}&bthe motd.txt file in the plugin folder!

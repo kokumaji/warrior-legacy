@@ -1,8 +1,6 @@
 package me.kokumaji.Warrior.Game.Managers;
 
-import lombok.Getter;
 import me.kokumaji.HibiscusAPI.api.storage.cache.Cache;
-import me.kokumaji.HibiscusAPI.api.translation.ChatMessage;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 import me.kokumaji.Warrior.Warrior;
 import org.bukkit.Bukkit;
@@ -10,43 +8,13 @@ import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.UUID;
-
 public class SpectateManager {
-
-    public interface ExecuteAction {
-        void run(Player player);
-    }
-
-    public static class SpectatePacket {
-        private ExecuteAction executeAction;
-        @Getter
-        UUID playerUUID;
-        private Plugin owner;
-        @Getter WarriorUser user;
-        @Getter SpectateReason reason;
-
-        public SpectatePacket(SpectateReason reason, WarriorUser user, ExecuteAction action, Plugin owner) {
-            this.executeAction = action;
-            this.reason = reason;
-            this.user = user;
-        }
-
-        public ExecuteAction getExecuteAction() {
-            return this.executeAction;
-        }
-
-        public Plugin getOwner() {
-            return this.owner;
-        }
-    }
 
     private static final Cache<WarriorUser> cached = new Cache<>();
 
@@ -68,15 +36,10 @@ public class SpectateManager {
         }
     }
 
-    public static boolean addPlayer(SpectatePacket packet) {
-        Player p = Bukkit.getPlayer(packet.getPlayerUUID());
-        WarriorUser user = packet.getUser();
-
-        if(!p.isOnline()) return false;
-
-        cached.add(packet.getUser());
-
-        switch(packet.getReason()) {
+    public static boolean addPlayer(WarriorUser user, SpectateReason reason) {
+        Player p = user.bukkit();
+        cached.add(user);
+        switch(reason) {
             case DEATH:
                 p.setHealth(20);
                 p.setFireTicks(0);
@@ -105,15 +68,16 @@ public class SpectateManager {
                             i--;
                         } else {
                             p.setGameMode(GameMode.SURVIVAL);
+                            p.teleport(p.getWorld().getSpawnLocation());
                             user.playSound(Sound.BLOCK_ENCHANTMENT_TABLE_USE);
                             p.sendTitle(" ", " ");
                             p.setFlying(false);
                             p.setAllowFlight(false);
                             p.removePotionEffect(PotionEffectType.INVISIBILITY);
-                            ghostTeam.removeEntry(p.getName());
-                            removePlayer(user);
 
-                            packet.executeAction.run(p);
+                            ghostTeam.removeEntry(p.getName());
+
+                            removePlayer(user);
                             cancel();
                         }
                     }

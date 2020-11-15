@@ -133,15 +133,14 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onItemInteract(PlayerInteractEvent e) {
         WarriorUser u = Warrior.getUserCache().get(e.getPlayer().getUniqueId());
-        ItemStack is = e.getItem();
-
-        if(is == null) return;
         if(u.isInLobby()) {
+            ItemStack is = e.getItem();
+
+            if(is == null) return;
+
             if(is.getType().equals(Material.IRON_SWORD)) {
                 Bukkit.dispatchCommand(u.bukkit(), "arena");
             }
-        } else if (u.getArena() != null) {
-
         }
     }
 
@@ -171,9 +170,7 @@ public class PlayerListener implements Listener {
 
         e.setCancelled(true);
 
-        SpectateManager.SpectatePacket packet = new SpectateManager.SpectatePacket(SpectateReason.DEATH, user, player -> player.teleport(player.getWorld().getSpawnLocation()), Warrior.getPlugin());
-
-        if(!SpectateManager.addPlayer(packet))
+        if(!SpectateManager.addPlayer(user, SpectateReason.DEATH))
             Warrior.getPluginLogger().warn("Could not put Player " + user.getUsername() + " in spectator mode.");
 
     }

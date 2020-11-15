@@ -59,9 +59,9 @@ public class LobbyManager {
     private void SetInventory(Player player) {
         // TODO: MOVE LOBBY ITEMS TO JSON FILES (./itemdata/(itemname).json)
         ItemStack arenaSelector = new GenericItem(Material.IRON_SWORD, 1, "§3§lArena Selector §r» §8(right click)")
-                                    .hideFlags(true).setLore("§7Opens the arena GUI").build();
+                .hideFlags(true).setLore("§7Opens the arena GUI").build();
         ItemStack kitPreview = new GenericItem(Material.CHEST, 1, "§6§lClass Preview §r» §8(right click)")
-                                    .hideFlags(true).setLore("§7Opens the kit preview GUI").build();
+                .hideFlags(true).setLore("§7Opens the kit preview GUI").build();
 
         for(PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());

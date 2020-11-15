@@ -50,7 +50,13 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
         if (args.length == 0) {
             ArenaGUI aGUI = (ArenaGUI) GUIHandler.GetGUI("arena");
-            Bukkit.getScheduler().runTask(self, () -> aGUI.BuildGUI(u.bukkit()));
+
+            Bukkit.getScheduler().runTask(self, new Runnable() {
+                @Override
+                public void run() {
+                    aGUI.BuildGUI(u.bukkit());
+                }
+            });
         } else if (args[0].equalsIgnoreCase("join")) {
             if (args.length < 2)
                 return true;
@@ -62,28 +68,22 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
             Arena a = ArenaManager.GetArena(args[1]);
 
-            if (a == null) {
-                u.sendMessage(translator.Translate(u.bukkit(), "arena-messages.does-not-exist", true, new HashMap<>() {
-                    private static final long serialVersionUID = 1L;
-
-                    {
-                        put("Arena", args[1]);
-                    }
-                }));
+            if (a == null)
                 return true;
-            }
 
+            Bukkit.getScheduler().runTask(self, new Runnable() {
+                @Override
+                public void run() {
+                   a.Teleport(u);
 
-            Bukkit.getScheduler().runTask(self, () -> {
-               a.Teleport(u);
+                   Sound s = null;
 
-               Sound s = null;
-
-               if(!c.getString("arena-settings.play-teleport-sound").toLowerCase().equals("none"))
-                   s = Sound.valueOf(c.getString("arena-settings.play-teleport-sound").toUpperCase());
-
-               u.playSound(s);
-               u.setArena(a);
+                   if(!c.getString("arena-settings.play-teleport-sound").toLowerCase().equals("none"))
+                       s = Sound.valueOf(c.getString("arena-settings.play-teleport-sound").toUpperCase());
+                   
+                   u.playSound(s);
+                   u.setArena(a);
+                }
             });
 
             u.sendMessage(translator.Translate(u.bukkit(), "arena-messages.arena-teleport", true, new HashMap<>(){

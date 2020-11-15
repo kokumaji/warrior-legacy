@@ -12,6 +12,5 @@ arena-messages:
   arena-teleport: "&7Teleporting to arena &b{Arena}"
   arena-leave: "&7Left arena &b{Arena}"
   already-joined: "&7You already joined an arena!"
-  does-not-exist: "&7Arena &b{Arena} &7does not exist!"
 lobby-messages:
   already-in-lobby: "&7You're already in the lobby!"

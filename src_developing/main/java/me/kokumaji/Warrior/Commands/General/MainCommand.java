@@ -9,11 +9,13 @@ import me.kokumaji.HibiscusAPI.api.objects.GenericItem;
 import me.kokumaji.HibiscusAPI.api.particle.Orientation;
 import me.kokumaji.HibiscusAPI.api.particle.ParticleSystem;
 import me.kokumaji.HibiscusAPI.api.particle.shapes.Circle;
+import me.kokumaji.HibiscusAPI.api.util.MathUtil;
 import me.kokumaji.HibiscusAPI.api.util.MojangUtil;
 import me.kokumaji.Warrior.Game.Objects.GUIs.ClassGUI;
 import me.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
 import me.kokumaji.Warrior.Utils.MessageUtil;
+import me.kokumaji.Warrior.Utils.ProgressBar;
 import me.kokumaji.Warrior.Warrior;
 import me.kokumaji.Warrior.Game.Managers.MOTDManager;
 
@@ -21,20 +23,22 @@ import me.kokumaji.HibiscusAPI.api.translation.ChatMessage;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 
 import me.kokumaji.Warrior.Utils.ConfigUtil;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Particle;
+import org.bukkit.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
+import org.bukkit.util.Vector;
 
 public class MainCommand extends AsyncCommand implements TabCompleter {
 

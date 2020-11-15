@@ -1,0 +1,198 @@
+#  __        __              _
+#  \ \      / /_ _ _ __ _ __(_) ___  _ __
+#   \ \ /\ / / _` | '__| '__| |/ _ \| '__|
+#    \ V  V / (_| | |  | |  | | (_) | |
+#     \_/\_/ \__,_|_|  |_|  |_|\___/|_|
+#                    developed by kokumaji
+#-----------------------------------------
+# ALPHA BUILD 1
+
+general-settings:
+
+  # The plugins default language
+  # Must be a valid ISO region code
+  default-language: "en_US"
+
+  # Whether per-user translations should be
+  # enabled. THIS IS IGNORED IN ALPHA VERSIONS.
+  allow-translations: true
+
+  # The plugin prefix that should appear
+  # in front of system messages.
+  plugin-prefix: "&3&lWarrior §8»§r"
+
+  # Enable Debug Mode to troubleshoot
+  # all kinds of issues (useful when reporting bugs)
+  debug: true
+
+chat-settings:
+
+  # Allow the plugin to replace the join message.
+  # The message can be modified in the messages.yml
+  announce-join: true
+
+  # Allow the plugin to replace the quit message.
+  # The message can be modified in the messages.yml
+  announce-quit: true
+
+  # Let the plugin handle a players first join.
+  # It is recommended to leave this setting 'true'
+  handle-first-join: true
+
+  # Send a 'MOTD' to a player when they join.
+  # DOES NOT affect players who join for the first time
+  # if handle-first-join is true.
+  send-motd: true
+
+  # The chat format that should be used for the chat manager.
+  # PlaceholderAPI support has to be enabled to use its placeholders.
+  chat-format: "%luckperms_prefix% %player% §7» "
+
+lobby-settings:
+
+  use-plugin-spawn: true
+
+  teleport-on-join: true
+
+  # plugin will use spawn of the following world
+  # if use-plugin-spawn is set to false
+  spawn-world: "world"
+
+  play-sound: "ENTITY_ENDERMAN_TELEPORT"
+
+arena-settings:
+
+  teleport-delay: 5
+
+  respawn-delay: 3
+
+  teleport-in-combat: false
+
+  play-teleport-sound: "ENTITY_ENDERMAN_TELEPORT"
+
+stats-settings:
+
+  allow-stats: true
+
+  stats-types:
+    - DAILY
+    - WEEKLY
+    - MONTHLY
+
+quest-settings:
+
+  allow-quests: true
+
+  quest-types:
+    - DAILY
+    - WEEKLY
+    - MONTHLY
+
+economy-settings:
+  # if set to false, use native currency manager
+  use-vault: true
+  # name of currency
+  currency-name: "coins"
+
+  # set to 0 to disable
+  death-punishment: 5
+
+  kill-reward: 25
+
+kit-settings:
+  # not yet implemented, allow users to
+  # register custom kits
+  allow-custom-kits: false
+
+  alchemist:
+    enabled: true
+    cost: 1000
+
+  archer:
+    enabled: true
+    cost: 1000
+
+  bomber:
+    enabled: true
+    cost: 1000
+
+  ninja:
+    enabled: true
+    cost: 1000
+
+  pyro:
+    enabled: true
+    cost: 1000
+
+  soldier:
+    enabled: true
+    cost: 1000
+
+  stomper:
+    enabled: true
+    cost: 1000
+
+  tank:
+    enabled: true
+    cost: 1000
+
+  thor:
+    enabled: true
+    cost: 1000
+
+killstreak-settings:
+    # use killstreak system
+    allow-killstreaks: true
+    # announce kill streak globally
+    announce-killstreak: true
+    # reward killstreaks with currency (multiplies with kill amount)
+    reward-killstreaks: true
+    # killstreak sound (requires announce-killstreak = true)
+    killstreak-announce-sound: ENTITY_ENDERDRAGON_GROWL
+    # killstreak cooldown (in seconds)
+    killstreak-cooldown: 60
+    # when to announce/reward killstreaks
+    killstreak-goals:
+      - 5
+      - 10
+      - 15
+      - 20
+      - 30
+      - 50
+
+data-storage:
+  # h2, mysql
+  storage-method: mysql
+
+  mysql-settings:
+
+    host: localhost
+
+    port: 3306
+
+    database: database
+
+    username: root
+
+    password: password
+
+    pool-size: 32
+
+    connect-timeout: 5000
+
+    table-prefix: "Warrior_"
+
+use-modules:
+
+  #whether Warrior should use PlaceholderAPI
+  placeholderapi-support: true
+
+  # use built in chat manager
+  use-chat-manager: true
+
+  # use native npc manager
+  use-npc-manager: true
+
+# DO NOT MODIFY THIS PART
+meta:
+  version: 0.1
