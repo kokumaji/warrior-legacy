@@ -75,8 +75,6 @@ public class Warrior extends JavaPlugin {
         apiProvider.debugMode = c.getBoolean("general-settings.debug");
         pluginLogger = apiProvider.getLogger();
 
-        new SpectateManager(c);
-
         if(!checkSupported())
             sendWarnMessage();
 
@@ -89,6 +87,8 @@ public class Warrior extends JavaPlugin {
     public void onEnable() {
 
         hologramCache = new HologramCache<>(this, Hologram.class);
+
+        new SpectateManager(c);
 
         HibiscusDebugger debugger = null;
         if(apiProvider.debugMode)

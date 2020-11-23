@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import me.kokumaji.HibiscusAPI.api.objects.GenericItem;
-import me.kokumaji.HibiscusAPI.api.particle.Orientation;
 import me.kokumaji.HibiscusAPI.api.particle.ParticleSystem;
-import me.kokumaji.HibiscusAPI.api.particle.shapes.Circle;
-import me.kokumaji.HibiscusAPI.api.util.MojangUtil;
+import me.kokumaji.HibiscusAPI.api.util.MathUtil;
 import me.kokumaji.Warrior.Game.Objects.GUIs.ClassGUI;
 import me.kokumaji.Warrior.Game.Objects.GUIs.GUIHandler;
 import me.kokumaji.Warrior.Game.Objects.WarriorUser;
@@ -23,16 +21,21 @@ import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import me.kokumaji.Warrior.Utils.ConfigUtil;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import me.kokumaji.HibiscusAPI.api.command.AsyncCommand;
 
@@ -105,17 +108,7 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                 }
             });
         } else if(args[0].equalsIgnoreCase("debug")) {
-            ParticleSystem ps = new ParticleSystem(self, user.bukkit().getLocation());
-            ps.shape(Particle.BLOCK_CRACK, new Circle(0, 0, 0, 1, Orientation.XZ), Material.REDSTONE_BLOCK.createBlockData());
-
-            ItemStack itemStack = new GenericItem(Material.PLAYER_HEAD, 1).build();
-            MojangUtil.applyURL("kokumaji", itemStack);
-
-            user.bukkit().getInventory().addItem(itemStack);
-
-            user.sendActionBar("Test Message");
-
-            /*ChatMessage msg = new ChatMessage("&3&lClick me for a suprise!")
+            ChatMessage msg = new ChatMessage("&3&lClick me for a suprise!")
                     .setClickAction(self, user.bukkit(), 20, player1 -> {
                         Location loc = user.bukkit().getLocation();
                         ArrayList<Entity> removeLater = new ArrayList<>();
@@ -154,7 +147,7 @@ public class MainCommand extends AsyncCommand implements TabCompleter {
                         }, 100L);
                     });
 
-            user.sendMessage(msg);*/
+            user.sendMessage(msg);
 
         } else {
             return true;

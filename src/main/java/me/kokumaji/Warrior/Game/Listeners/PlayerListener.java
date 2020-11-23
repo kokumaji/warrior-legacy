@@ -173,6 +173,8 @@ public class PlayerListener implements Listener {
 
         SpectateManager.SpectatePacket packet = new SpectateManager.SpectatePacket(SpectateReason.DEATH, user, player -> player.teleport(player.getWorld().getSpawnLocation()), Warrior.getPlugin());
 
+        System.out.println(packet.getUser().getKey());
+
         if(!SpectateManager.addPlayer(packet))
             Warrior.getPluginLogger().warn("Could not put Player " + user.getUsername() + " in spectator mode.");
 

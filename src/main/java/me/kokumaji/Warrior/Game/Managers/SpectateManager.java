@@ -30,8 +30,8 @@ public class SpectateManager {
         @Getter
         UUID playerUUID;
         private Plugin owner;
-        @Getter WarriorUser user;
-        @Getter SpectateReason reason;
+        @Getter public WarriorUser user;
+        @Getter public SpectateReason reason;
 
         public SpectatePacket(SpectateReason reason, WarriorUser user, ExecuteAction action, Plugin owner) {
             this.executeAction = action;
@@ -69,8 +69,8 @@ public class SpectateManager {
     }
 
     public static boolean addPlayer(SpectatePacket packet) {
-        Player p = Bukkit.getPlayer(packet.getPlayerUUID());
         WarriorUser user = packet.getUser();
+        Player p = user.bukkit();
 
         if(!p.isOnline()) return false;
 
