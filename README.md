@@ -1,7 +1,7 @@
 ![Warrior Plugin Logo](assets/warrior_logo.png?raw=true "Warrior Logo")
 ---
-**Warrior** is a fully customizable, class-based competitive FFA plugin. Its easy
-to understand commands & integrated script system allows you to add/remove content as you wish!
+**Warrior (Legacy)** is a free and open-source FFA/KitPvP plugin for [PaperMC](https://github.com/PaperMC/Paper "PaperMC Github"). 
+
 
 ## Features
 - Fast & simple arena creation
