@@ -12,7 +12,7 @@ plugins {
     // We need Spigradle and the Shadow Plugin
     // just to make life easier for everyone. 
     id 'kr.entree.spigradle' version '2.2.3'
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.0'
 }
 
 // Setting some variables for our plugin!
