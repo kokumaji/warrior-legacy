@@ -43,8 +43,8 @@ repositories {
 }
 
 dependencies {
-	annotationProcessor 'org.projectlombok:lombok:1.18.16'
-    compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
 
     // These are no Minecraft plugins, so 
     // shadow them into the final jar!
